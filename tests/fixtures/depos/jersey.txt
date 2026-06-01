@@ -1,0 +1,553 @@
+0001
+ 1                SUPERIOR COURT OF NEW JERSEY
+ 2                LAW DIVISION - MONMOUTH COUNTY
+ 3                DOCKET NO. MON-L-3765-06
+ 4   
+ 5                  - - -
+ 6   FILOMEN DA CRUZ, ALECINA RODRIGUEZ,:
+     and FRANCIELLE DA CRUZ,            :
+ 7                Plaintiffs,           :
+            vs.                         :
+ 8   MARTIN CAMMARANO, SEA COAST        :
+     CHEVROLET, JOHN DOES 1-5 and       :
+ 9   ABC BUSINESS ENTITIES 1-5,         : 
+                  Defendants,           :
+10                 - - -
+11              APRIL 2, 2009
+12                 - - -
+13              Oral deposition of STEPHEN EMOLO
+     held in the offices of JOHN DESCH ASSOCIATES,
+14   INC. 28 Newark Pompton Turnpike, Riverdale, 
+     New Jersey, commencing at 10:30 a.m. on the 
+15   above date, before LAURA WESTRA Certified
+     Court Reporter and Notary Public. 
+16         
+17   
+18   
+19                       * * *  
+20              
+21    
+22     
+23    
+24    
+25                 
+0002
+ 1   A P P E R A N C E S:
+ 2   
+ 3          KEEFE, BARTELS & CLARK, LLC
+ 4          Attorneys for the Plaintiffs
+ 5          170 Monmouth Street
+ 6          Red Bank, New Jersey  07701
+ 7          BY:  GERALD H. CLARK, ESQ.
+ 8          732-224-9400
+ 9   
+10   
+11          DWYER, CONNELL & LISBONA, ESQS.
+12          Attorneys for Defendant/Cammarano
+13          100 Passaic Avenue
+14          Fairfield, New Jersey  07004
+15          BY:  CHARLES B. CAREY, ESQ.
+16          973-276-1800
+17          ccarey@dcllaw.com
+18   
+19          MONTGOMERY, CHAPIN & FETTEN, PC
+20          Attorneys for Defendant/Sea Coast Chevrolet
+21          745 Route 202/206, Suite 101
+22          Bridgewater, New Jersey  08807
+23          BY:  JOHN S. FETTEN, ESQ.
+24          908-203-8833
+25   
+0003
+ 1                       - - -  
+ 2                     I N D E X   
+ 3    WITNESS                               PAGE NO.
+ 4   STEPHEN EMOLO   
+ 5         By  MR. CLARK                        5
+ 6                      - - -
+ 7                  E X H I B I T S        
+ 8   NO.          DESCRIPTION               PAGE NO.
+ 9   EMOLO-1      PHOTOS (21 PAGES)              6
+10   EMOLO-2      PHOTOS (22 PAGES)              6
+11   EMOLO-3      CV                             6
+12   EMOLO-4      POLICE PHOTOS (20 PAGES)       6
+13   EMOLO-5      FOLDER                         6
+14   EMOLO-5A     FIELD SKETCH                  14
+15   EMOLO-5B     DECELERATION TEST             14
+16   EMOLO-5C     CALCULATIONS                  14
+17   EMOLO-5D     VIN INFORMATION               14
+18   EMOLO-5E     BILLS                         16
+19   EMOLO-5F     DVD                           16
+20   EMOLO-5G     CALL FORM                     72
+21   EMOLO-5H     RECONSTRUCTION DIAGRAM       114
+22   EMOLO-6      RECONSTRUCTION DIAGRAM       114
+23   
+24   (Exhibits retained by counsel.)
+25   
+0004
+ 1   DOCUMENT REQUESTS                     PAGE NO.
+ 2   
+ 3   DEPOSITION TRANSCRIPTS                    10
+ 4   CERTIFICATE OF COMPLETION                 25
+ 5   NORTHWESTERN UNIVERSITY TRAFFIC
+ 6     INSTITUTION TRANSCRIPT                  26
+ 7   UNIVERSITY OF FLORIDA CERTIFICATE         28
+ 8   NORTHWESTERN UNIVERSITY CERTIFICATE       29
+ 9   COPY OF ACTAR CERTIFICATION               58
+10   COURT TV COMMENTATOR TAPE                 60
+11   URBAN WORK ZONE SAFETY CERTIFICATE        61
+12   PERSONNEL FILE                            66
+13   ORIGINAL CHIKANIAN-1 EXHIBIT             109
+14   
+15   
+16   
+17   
+18   
+19   
+20   
+21   
+22   
+23   
+24   
+25   
+0005
+ 1   S T E P H E N   E M O L O, 28 Newark Pompton
+ 2         Turnpike, Riverdale, New Jersey, is duly
+ 3         sworn by a Notary Public of the State of New
+ 4         Jersey and testifies under oath as follows:
+ 5   DIRECT EXAMINATION BY MR. CLARK:
+ 6         Q      Good morning, Mr. Emolo.  My name is
+ 7   Jerry Clark.  I am an attorney.  I represent the
+ 8   plaintiffs in the case.  You understand that you are
+ 9   here today for your deposition?
+10   A     Yes.
+11         Q      Okay.  Have you ever had your
+12   deposition taken before?
+13   A     Yes, I have.
+14         Q      Okay.  About how many times?
+15   A     Roughly about 30.
+16         Q      Okay.  I will refresh your memory as to
+17   some of the instructions for the deposition.  You
+18   understand that in a deposition setting you are
+19   sworn under oath to tell the truth?
+20   A     Yes, I do.
+21         Q      Okay.  You understand that there is a
+22   transcript being created and the transcript can be
+23   used at the time of trial to cross-examine you?
+24   A     Yes.
+25         Q      Okay.  So it is important if you don't
+0006
+ 1   understand any of my questions to let me know, okay?
+ 2   A     Yes.
+ 3         Q      If you answer a question, I am going to
+ 4   assume that you understood it, okay?
+ 5   A     Okay.
+ 6         Q      If you don't know the answer to a
+ 7   question, it is perfectly okay to say that you don't
+ 8   know, as long as that is the truth, okay?
+ 9   A     Yes.
+10         Q      Just going through your file a bit, do
+11   you keep the file in a big folder, like one folder?
+12   A     Yes.
+13         Q      All right.  I would like to mark the
+14   folder.
+15                (Whereupon, exhibit Emolo-1, Emolo-2,
+16   Emolo-3, Emolo-4 and Emolo-5 are received and marked
+17   for identification.)
+18                MR. FETTEN:  Let me put on the record
+19   now, Mr. Clark, what we have removed from the file
+20   as privileged:  January 5, '09 letter from myself to
+21   the expert; October 22, 2008 letter from myself to
+22   the expert and an additional copy; June 17, '08
+23   letter from myself to the expert; June 27, '08
+24   letter from the expert to us regarding fees for
+25   depositions; there is also the fee schedule which I
+0007
+ 1   think we have provided to you; June 25, 2008 letter
+ 2   from myself to the expert; April 9, 2008 letter from
+ 3   Mr. Carey to the expert; February 21, 2008 letter
+ 4   from Mr. Carey to the expert; February 20, 2008
+ 5   letter from Mr. Carey to the expert; December 14,
+ 6   2007 letter from the expert's office to predecessor
+ 7   counsel for the defendants, and a August 10, 2007
+ 8   proposal and assignment acknowledgment from the
+ 9   expert to predecessor counsel, fax cover page and a
+10   July 30, 2007 letter from predecessor counsel to the
+11   expert and internal summary information from the
+12   expert; August 2, 2007 letter from the expert to
+13   predecessor counsel.  That is a list of privileged
+14   communications that have been removed from the file.
+15                MR. CLARK:  What about the other one?
+16                MR. FETTEN:  That is the same August
+17   10, 2007 communication from the expert to
+18   predecessor counsel; April 7, 2008 letter from
+19   myself to the expert.
+20         Q      We have marked as Emolo-5 for
+21   identification your case folder.  And the documents
+22   that you have allowed me to look at from that
+23   folder, are those all the documents contained within
+24   your file, except for the documents that Mr. Fetten
+25   just mentioned on the record as to a privilege log?
+0008
+ 1   A     Yes, they are.
+ 2         Q      Just for the record, we have also
+ 3   marked from your file a number of other exhibits.
+ 4   We have marked as Emolo-1 a series of photographs,
+ 5   and we have written on the cover of each page in the
+ 6   lower right-hand corner number 1 through 21,
+ 7   respectively.  We have also marked as Emolo-2
+ 8   another series of photographs which we have also
+ 9   marked 1 through 22, respectively, in the same
+10   manner.  We have also marked your CV as Emolo-3,
+11   which is a four-page document that we have marked.
+12   We have marked as Emolo-4 the police photographs
+13   exhibit, each page of which has been marked 1
+14   through 20 in the lower right-hand corner,
+15   respectively.
+16         I want to go through your CV.  Do you want
+17   another copy?
+18   A     There is a copy here.
+19         Q      Okay.  In your report?  All right.  You
+20   understand that we have marked your file as evidence
+21   so you should maintain it through the end of the
+22   case and for trial?
+23   A     Sure.
+24         Q      Okay.  We will put these photos in the
+25   middle because we may use them throughout the
+0009
+ 1   deposition.  Okay.  Let's talk about your
+ 2   educational background.  Where did you go to high
+ 3   school?
+ 4   A     It was a technical high school, Passaic County
+ 5   Technical Vocational High School.
+ 6         Q      And how many years did you go there?
+ 7   A     Four.
+ 8         Q      And what year did you graduate?
+ 9   A     1969, I believe.
+10         Q      And did you leave there with any
+11   particular certification or certificate aside from a
+12   diploma?
+13   A     No.
+14         Q      What did you study there?
+15   A     I studied -- there was a graphic arts course,
+16   engineering drafting.
+17         Q      When you graduated there in or about
+18   1969, what did you do next by way of schooling?
+19   A     I attended Newark College of Engineering,
+20   their Division of Technology.
+21         Q      Okay.  And how long were you there for?
+22   A     Two years.
+23         Q      Did you leave there with any particular
+24   certification or degree?
+25   A     Certification, yes.
+0010
+ 1         Q      In what?
+ 2   A     For completion of the course in municipal
+ 3   engineering technology.
+ 4         Q      Do you keep any copies of any
+ 5   depositions that you've had?  You said you've had
+ 6   about 30 depositions.  Do you have copies of any of
+ 7   those?
+ 8   A     I may have some if they were sent to me.  If
+ 9   they are not sent to me, I don't have copies.
+10         Q      If they were sent to you would they be
+11   maintained in each separate file for which you
+12   testified, or do you keep them together somewhere?
+13   A     They are kept in the separate files until the
+14   case is completed and then they are moved downstairs
+15   to our dead storage file.
+16                MR. CLARK:  For the record, I'd request
+17   from Mr. Emolo copies of any deposition transcript
+18   he has in any cases.
+19                MR. FETTEN:  We will have to get you a
+20   cost analysis to see how much time would be involved
+21   in doing that, and we will communicate with you on
+22   that.
+23         Q      So at Newark College you had a
+24   certificate in municipal what?
+25   A     Municipal engineering technology.
+0011
+ 1         Q      And what was your next -- when did you
+ 2   leave there about?
+ 3   A     '72.
+ 4         Q      And what did you do next after that by
+ 5   way of schooling?
+ 6   A     That is when I started to the specialized
+ 7   training in this field of traffic accident
+ 8   reconstruction.  In 1989 I attended Northwestern
+ 9   University, their Traffic Institute.
+10         Q      Did you ever serve as a law enforcement
+11   officer?
+12   A     No.
+13         Q      You attended that specialized training
+14   at Northwestern in 1989.  When did that complete?
+15   A     In '89, same year.
+16         Q      After the specialized training at
+17   Northwestern, what was your next educational
+18   experience?
+19   A     There may have been some seminars, special
+20   problems classes, at either Northwestern or the
+21   Institute of Police Technology and Management, at
+22   the University of North Florida, but in 1992 I went
+23   back to the University of North Florida and I
+24   studied again in the same field.  The course at that
+25   time was the traffic accident reconstruction course.
+0012
+ 1         Q      After the traffic accident course at
+ 2   the University of North Florida, what was your next
+ 3   educational experience?
+ 4   A     There are several, as I said, specialized
+ 5   courses that I have taken and attended seminars.
+ 6   They are listed on page two.  Special problems at
+ 7   the University of North Florida in '85, the S.O.R.E.
+ 8   conference in 1987, the Notari (spelled
+ 9   phonetically) conference in '90 and '92, the
+10   combined conferences in '93 and '94.  And all of the
+11   curriculum that we studied at those courses are
+12   listed on page two of the CV.  There are several
+13   other combined conferences from '95, '97, '98 and
+14   '99.  And then from that point I went back to
+15   Northwestern University and studied the course in
+16   micro computer assisted traffic accident
+17   reconstruction.
+18         Q      That was in 2000?
+19   A     Yes.
+20         Q      Do you have a four-year college degree?
+21   A     No.
+22         Q      Did you work with Ms. Wieback on any
+23   other cases other than this one?
+24   A     No.  I did not personally, no.
+25         Q      Do you know how she found you?
+0013
+ 1   A     No.  An assignment came from her office to our
+ 2   office.  And at that point we logged it in doing an
+ 3   initial evaluation and move forward from there, if
+ 4   we are authorized to continue on the project.
+ 5         Q      Do you know if she worked for -- strike
+ 6   that.
+ 7         Do you know if she retained this company, John
+ 8   Desch Associates, prior to this case?
+ 9   A     I believe there was at least one other prior
+10   to this case.
+11         Q      Do you guys -- does John Desch
+12   Associates have any special relationship with Zurich
+13   Insurance Company where your company is sort of on
+14   their approved list of experts?
+15                MR. FETTEN:  Objection to form.  You
+16   can answer the question.
+17   A     I don't know if they do or not.
+18         Q      Okay.  Do you have -- so you don't have
+19   a Bachelor of Arts degree or a Bachelor of Science
+20   degree?
+21                MR. FETTEN:  Objection.  Asked and
+22   answered.  Go ahead.
+23   A     No.
+24         Q      And you are not a Ph.D., correct?
+25   A     No.
+0014
+ 1         Q      And you are also not a professional
+ 2   engineer?
+ 3   A     No, I do not have my professional engineering
+ 4   license.
+ 5         Q      Did you ever try to get it?
+ 6   A     No.
+ 7         Q      So you are not licensed in the State of
+ 8   New Jersey to conduct engineering evaluations, are
+ 9   you?
+10                MR. FETTEN:  Objection to form.
+11   A     I'm not licensed in any state to conduct any
+12   type of engineering analysis.
+13         Q      Let's take a look at your file for a
+14   sec here.
+15                (Whereupon, exhibit Emolo-5A, Emolo-5B,
+16   Emolo-5C and Emolo-5D are received and marked for
+17   identification.)
+18         Q      All right.  We have marked the
+19   following exhibits:  Emolo-5A is a seven-page
+20   exhibit.  Can you just tell us what that exhibit is?
+21   A     The exhibit is a field sketch of the accident
+22   location which we prepared on October 18, '07, when
+23   we arrived here to do our initial field
+24   investigation.  Attached to that is the printout
+25   from the Sikia (spelled phonetically) Total Station,
+0015
+ 1   which is an electronic distance measuring
+ 2   instrument.  That is the instrument we used to
+ 3   document the roadway conditions that existed at the
+ 4   time of our inspection.  Attached to that are all of
+ 5   the raw data that was gathered from this instrument.
+ 6         Q      We have marked as Emolo-5B a two-page
+ 7   exhibit.  Can you just tell us what Emolo-5-B is?
+ 8   A     5B is a printout of the results of our
+ 9   deceleration test that we performed at the accident
+10   location.  They were performed using a
+11   accelerometer, a Vericom VC3000.
+12         Q      We have marked as Emolo-5C a four-page
+13   exhibit.  Can you tell us what that exhibit is?
+14   A     These are just printouts of some of the
+15   calculations we performed with regards to the
+16   analysis of this accident.
+17         Q      And we have marked as Emolo-5D a
+18   seven-page exhibit.  Can you tell us what that is?
+19   A     This is a printout of the VIN information on
+20   the accident vehicle so that we could obtain the
+21   specifications from our expert data base on a 2006
+22   Chevy Suburban vehicle.  Attached with that are
+23   three of our vehicle forms that were used to
+24   document the measurements of the vehicles that we
+25   had at the accident location when we performed our
+0016
+ 1   visibility testing.
+ 2                (Whereupon, exhibit Emolo-5E is
+ 3   received and marked for identification.)
+ 4         Q      Okay.  And we have marked as Emolo-5E a
+ 5   series of bills.  Are these bills updated to just
+ 6   before today?
+ 7   A     As far as I am aware of, yes, these are
+ 8   updated up to today.
+ 9         Q      You were present at the accident
+10   reconstruction that was conducted that's, at least
+11   in part, recorded on the video, correct?
+12                MR. FETTEN:  Objection to form.  It is
+13   the phrase reconstruction that you are using that I
+14   object to.
+15   A     It wasn't a reconstruction.  It was our site
+16   visit and visibility testing that was conducted.
+17                (Whereupon, exhibit Emolo-5F is
+18   received and marked for identification.)
+19         Q      So for the record, we have marked as an
+20   exhibit 5F a sub-exhibit within exhibit 5.  What is
+21   that exhibit?
+22   A     That is a DVD copy of a videotape that we took
+23   during our visit to the site when we conducted, as I
+24   said, our visibility testing.
+25         Q      What was the purpose of that videotape?
+0017
+ 1   A     Purpose of the videotape was to determine what
+ 2   the sight lines and visibility distance would have
+ 3   been for the two parties involved at the time of the
+ 4   collision event.
+ 5         Q      How many times did your company visit
+ 6   the site?
+ 7   A     I believe just -- I'd have to check, but I
+ 8   believe just two.  Just on one occasion.
+ 9         Q      Did your company ever perform or do any
+10   accident reconstruction in this case, or no?
+11                MR. FETTEN:  Objection to form.
+12   A     When you say reconstruction, I don't
+13   understand what you mean.  Are you talking about a
+14   reconstruction at the accident location when we were
+15   doing our on-site inspection?
+16         Q      Well, I guess I mean accident
+17   reconstruction in the way that it is contained on
+18   the top of the letterhead of John Desch Associates.
+19                MR. FETTEN:  Objection to form.
+20   A     The accident reconstructionist in the form of
+21   our report, after the field work is completed and
+22   the analysis is completed, we then do a
+23   reconstruction report which summarizes all of the
+24   testing that we conducted, all of the materials
+25   reviewed and the analysis, and then we formulate our
+0018
+ 1   opinions based upon that.
+ 2         Q      You are not an engineer, correct?
+ 3   A     No, I am not.
+ 4         Q      Do you have an associates college
+ 5   degree?
+ 6                MR. FETTEN:  Objection to form.  Asked
+ 7   and answered.  Go ahead.
+ 8   A     No.
+ 9         Q      So no two-year associates college
+10   degree, correct?
+11   A     I have two years of college, but I do not have
+12   an associates college degree.
+13         Q      Is the Newark College of Engineering
+14   Division of Technology still around?
+15   A     Yes.  Now it is referred to as NJIT, New
+16   Jersey Institute of Technology.
+17         Q      Now, how long were you at the Newark
+18   College of Engineering?
+19   A     Two years.
+20         Q      When you say two years, do you mean you
+21   were there for 24 months?  Or can you be more
+22   specific on what that means?  Like, for example, I
+23   would say that normally if someone said they were in
+24   college for two years, that would normally mean that
+25   they started in September and finished about May or
+0019
+ 1   June of the following year, had a summer break and
+ 2   then started the next September and finished about
+ 3   May or June and then that would be the two-year
+ 4   period.  Can you give us some more detail as to what
+ 5   you mean by having attended that institution for two
+ 6   years?
+ 7                MR. FETTEN:  Objection to form.
+ 8   A     It was a two-year course.  I couldn't tell you
+ 9   the months that I attended or the months that I had
+10   off in between the two years, but it was a two-year
+11   course.
+12         Q      So it was just one course?
+13   A     It is a municipal engineering technology
+14   course that extends for two years.  It covers
+15   several different fields in the field of civil
+16   engineering.
+17         Q      I think a normal college course would
+18   be about three credits.
+19                MR. FETTEN:  Hold on a second.  I am
+20   going to object to the form of the question.  What
+21   you may think -- ask the witness a question, but
+22   there is no reason to preface it with your
+23   understanding of things.  Just ask the questions.  I
+24   object to the form.  If you want to start over
+25   because I interrupted you, please do.  I know that
+0020
+ 1   is the way you ask questions, Mr. Clark, but I am
+ 2   just going to object to the form of those types of
+ 3   questions.  Continue.
+ 4         Q      I omitted to give an instruction at the
+ 5   beginning of the deposition, and it is actually my
+ 6   fault.  Do you understand that the court reporter
+ 7   sitting to your right and to my left is taking
+ 8   everything that is said in this room on the record
+ 9   down?  Do you understand that?
+10   A     Yes.
+11         Q      Okay.  So it is, therefore, important
+12   for you to verbalize all your responses to the
+13   questions, okay?
+14   A     Yes.
+15         Q      If you want to answer in the
+16   affirmative, you have to actually say yes.  And if
+17   you want to answer in the negative, you have to
+18   actually say no.  You understand that?
+19   A     Yes.
+20         Q      Since the court reporter is taking down
+21   everything that is said in the room on the record,
+22   she can only take down one person speaking at a
+23   time, so it is important for you, as the witness,
+24   and me, as the person asking the questions, to have
+25   only one of us speak at a time, okay?
+0021
+ 1   A     Sure.
+ 2         Q      So I will wait until you finish
+ 3   answering a question before I ask the next question,
+ 4   okay?
+ 5   A     Okay.
+ 6         Q      And in normal conversation you can
+ 7   anticipate what someone is going to say so you can
+ 8   kind of interrupt them to save time and jump ahead
+ 9   and answer a question, but that will be unclear on
+10   the record.  So even though you may know what I am
+11   asking and what I am saying, just wait until I
+12   actually finish asking the question before you
+13   answer it, okay?
+14   A     All right.
+15         Q      Okay.  Now, normally a college course
+16   would have, say, three credits.  Maybe some college
+17   courses, like if it is a lab or part time, would
+18   have two credits.  My question to you is how many
+19   credits did that two-year course that you took at
+20   the Newark College give you, if any?
+21                MR. FETTEN:  Objection to form.
+22   A     I have no recollection of that, how many
+23   credits there were.
+24         Q      How many hours was each class,
+25   typically, over that two-year period?

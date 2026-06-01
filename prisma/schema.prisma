@@ -1,0 +1,350 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/app/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String
+  firstName     String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  members       Member[]
+  invitations   Invitation[]
+  documents     Document[]
+
+  role       String?
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+
+  shouldEmailOnComplete Boolean @default(true)
+  marketingEmails       Boolean @default(true)
+  productUpdates        Boolean @default(true)
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id                   String   @id @default(cuid())
+  expiresAt            DateTime
+  token                String
+  createdAt            DateTime
+  updatedAt            DateTime
+  ipAddress            String?
+  userAgent            String?
+  userId               String
+  user                 User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activeOrganizationId String?
+
+  impersonatedBy String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id String @id @default(cuid())
+
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Organization {
+  id String @id @default(cuid())
+
+  name          String
+  slug          String?
+  logo          String?
+  createdAt     DateTime       @default(now())
+  metadata      String?
+  members       Member[]
+  invitations   Invitation[]
+  domains       Domain[]
+  documents     Document[]
+  subscriptions Subscription[]
+
+  discountCodesApplied String[] @default([])
+
+  freeForever Boolean @default(false)
+  trial       Trial?  @relation(fields: [trialId], references: [id])
+  trialId     String? @unique
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Domain {
+  id String @id @default(cuid())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  domain         String
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime
+
+  @@unique([domain])
+  @@map("domain")
+}
+
+model Member {
+  id String @id @default(cuid())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String
+  createdAt      DateTime     @default(now())
+
+  @@map("member")
+}
+
+model Invitation {
+  id String @id @default(cuid())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String
+  expiresAt      DateTime
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+
+  @@map("invitation")
+}
+
+enum ModelProvider {
+  gpt_4o_mini
+  claude_3_5_haiku
+  claude_4_sonnet
+  claude_haiku_4_5
+}
+
+enum DocumentStatus {
+  uploading // uploading, waiting for trigger to start
+  pending // it's been uploaded, but not grabbed by trigger yet
+  processing // trigger has started
+  finalizing // summary done, waiting for screenshot to be taken
+  complete // done w/ screenshot
+  failed // failed to summarize, something went wrong
+  deleted // document has been deleted
+}
+
+model Document {
+  id String @id @default(cuid())
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  modelProvider ModelProvider @default(claude_haiku_4_5)
+
+  fileType String
+  fileName String
+  fileSize Int
+  fileUrl  String
+
+  triggerId         String?
+  publicAccessToken String?
+
+  status DocumentStatus @default(pending)
+
+  isArchived Boolean   @default(false)
+  deletedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expectedChunkCount Int?
+
+  stripeEventIdentifier String?
+
+  summaryChunks SummaryChunk[]
+  abstract      SummaryAbstract?
+  metadata      SummaryMetadata?
+
+  pageCount         Int?
+  relevantStartPage Int?
+  relevantEndPage   Int?
+
+  summaryUrl String?
+
+  @@index([organizationId, isArchived, deletedAt, createdAt(sort: Desc)])
+  @@index([organizationId, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@index([status])
+  @@index([userId])
+  @@map("document")
+}
+
+model SummaryAbstract {
+  id       String @id @default(uuid())
+  abstract String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  modelProvider    ModelProvider
+  timeInMs         Int
+  inputTokenCount  Int
+  outputTokenCount Int
+  estimatedCost    Float?
+
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId])
+  @@index([documentId])
+  @@map("summary_abstract")
+}
+
+model SummaryMetadata {
+  id                    String  @id @default(uuid())
+  caseNumber            String?
+  caseTitle             String?
+  deponent              String?
+  depositionDate        String?
+  depositionLocation    String?
+  attorneysForPlaintiff String?
+  attorneysForDefense   String?
+
+  modelProvider    ModelProvider
+  timeInMs         Int
+  inputTokenCount  Int
+  outputTokenCount Int
+  estimatedCost    Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@unique([documentId])
+  @@index([documentId])
+  @@map("summary_metadata")
+}
+
+model SummaryChunk {
+  id        String  @id @default(uuid())
+  startPage Int // First page of chunk
+  endPage   Int // Last page of chunk
+  summary   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  documentId String
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  modelProvider    ModelProvider
+  timeInMs         Int
+  inputTokenCount  Int
+  outputTokenCount Int
+  estimatedCost    Float?
+
+  isRelevant Boolean @default(true)
+
+  @@unique([documentId, startPage, endPage])
+  @@index([documentId, startPage, endPage])
+  @@map("summary_chunk")
+}
+
+enum SubscriptionPlan {
+  Professional
+}
+
+enum SubscriptionStatus {
+  active // The subscription is active and can be used
+  canceled // The subscription has been canceled, but has not reached its end yet
+  retired // The subscription has been canceled and expired, it is kept for archival reasons only
+}
+
+enum SubscriptionRetirementReason {
+  unpaid
+  canceled
+}
+
+model Subscription {
+  id             String @id @default(cuid())
+  organizationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  plan SubscriptionPlan @default(Professional)
+
+  status      SubscriptionStatus
+  periodEnd   DateTime
+  periodStart DateTime
+
+  retirementReason SubscriptionRetirementReason?
+  pastDue          Boolean                       @default(false)
+
+  stripeCustomerId     String
+  stripeSubscriptionId String @unique
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+
+  // There is an additional partial unique index on this table that enforces
+  // only one row per organizationId that is of status `active` or `canceled`
+  @@map("subscription")
+}
+
+model Trial {
+  id String @id @default(cuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  endsAt DateTime
+
+  creditsAvailable Int           @default(1)
+  creditsUsed      Int           @default(0)
+  organization     Organization?
+
+  @@map("trial")
+}

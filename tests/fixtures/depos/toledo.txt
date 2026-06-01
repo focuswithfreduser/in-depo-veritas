@@ -1,0 +1,174 @@
+0001
+ 1                UNITED STATES DISTRICT COURT
+                  NORTHERN DISTRICT OF OHIO
+ 2                      WESTERN DIVISION
+ 3   MICHAEL ANDERSON,               )
+                                    )
+ 4   Plaintiff,                     )
+                                    )
+ 5   vs.                            )Case No. 3:22-cv-01547-JKL
+                                    )
+ 6   CITY OF TOLEDO, et al.,        )
+                                    )
+ 7   Defendants.                    )
+ 8   
+ 9   
+10   
+11        VIDEOCONFERENCE DEPOSITION OF ROBERT WILLIAMS
+12   
+13   
+14                Taken on behalf of Plaintiff
+15                     April 10, 2023
+16   
+17   
+18                 SUMMIT LITIGATION SERVICES
+                       4567 MAIN STREET
+19                    TOLEDO, OH 43604
+                         (419) 555-1234
+20   
+21   
+22   
+23   
+24   
+25   
+0002
+ 1         I N D E X   O F   E X A M I N A T I O N
+ 2   
+ 3   WITNESS:  ROBERT WILLIAMS
+ 4        Examination By Mr. Davidson ......................5
+ 5   
+ 6   
+      (There were no exhibits marked in this deposition.)
+ 7   
+ 8   
+ 9   
+10   
+11   
+12   
+13   
+14   
+15   
+16   
+17   
+18   
+19   
+20   
+21   
+22   
+23   
+24   
+25   
+0003
+ 1                UNITED STATES DISTRICT COURT
+                  NORTHERN DISTRICT OF OHIO
+ 2                      WESTERN DIVISION
+ 3   MICHAEL ANDERSON,               )
+                                    )
+ 4   Plaintiff,                     )
+                                    )
+ 5   vs.                            )Case No. 3:22-cv-01547-JKL
+                                    )
+ 6   CITY OF TOLEDO, et al.,        )
+                                    )
+ 7   Defendants.                    )
+ 8   
+ 9   
+10   
+11                     VIDEOCONFERENCE DEPOSITION OF ROBERT 
+12   WILLIAMS, produced, sworn, and examined on behalf of 
+13   the Plaintiff, April 10, 2023, between the hours of
+14   eight o'clock in the forenoon and five o'clock in the
+15   afternoon on that day, via different remote locations,
+16   before Jessica M. Carter, a Registered Professional
+17   Reporter, Certified Court Reporter, and Certified
+18   Shorthand Reporter within and for the State of
+19   Ohio.
+20   
+21   
+22   
+23   
+24   
+25   
+0004
+ 1                   A P P E A R A N C E S
+ 2   FOR THE PLAINTIFF VIA VIDEOCONFERENCE:
+ 3             MATTHEW DAVIDSON
+               Davidson & Associates, LLP
+ 4             789 Court Street, Suite 202
+               Toledo, OH 43604
+ 5             (419) 777-5678
+               matt.davidson@davidsonlaw.com
+ 6   
+ 7   FOR THE DEFENDANTS VIA VIDEOCONFERENCE:
+ 8             LUCAS RAMIREZ
+               Assistant City Attorney
+ 9             300 Adams Street, Room 210
+               Toledo, OH 43604
+10             (419) 555-7890
+               ramirezl@toledo-oh.gov
+11   
+12   REPORTED BY:
+13             JESSICA M. CARTER, RPR, CCR, CSR
+               Summit Litigation Services
+14   
+15   
+16   
+17   
+18   
+19   
+20   
+21   
+22   
+23   
+24   
+25   
+0005
+ 1                      IT IS STIPULATED AND AGREED by and 
+ 2   between counsel for the Plaintiff and counsel for the
+ 3   Defendants that the videoconference deposition of
+ 4   ROBERT WILLIAMS may be taken in shorthand by Jessica M.
+ 5   Carter, a Registered Professional Reporter, Certified
+ 6   Court Reporter, and Certified Shorthand Reporter, and
+ 7   afterwards transcribed into typewriting, and the
+ 8   signature of the witness is reserved by agreement of
+ 9   counsel and the witness.
+10                         * * * * *
+11                       ROBERT WILLIAMS,
+12   of lawful age, being produced, sworn, and examined on
+13   the part of the Plaintiff, and after responding "Yes"
+14   to the oath administered by the court reporter, deposes
+15   and says:
+16                         * * * * *
+17                        EXAMINATION
+18   QUESTIONS BY MR. DAVIDSON:
+19        Q    Good morning.  Can you state your name for
+20   the -- introduce yourself on the record?
+21        A    Robert Williams.
+22        Q    And what is your current occupation?
+23        A    I am a police officer for the City of Toledo.
+24        Q    And what is your current assignment?
+25        A    The domestic violence unit.
+0006
+ 1        Q    And how long have you been with them?
+ 2        A    Approximately five years.
+ 3        Q    Were you with domestic -- the domestic
+ 4   violence unit in September of 2019?
+ 5        A    Yes.
+ 6        Q    On September 18th of 2019, were you at --
+ 7   were you at the -- the Johnson protest at
+ 8   Monroe and Summit area by the courthouse?
+ 9        A    Yes.
+10        Q    Okay.  In advance of this deposition, did
+11   you review any documents?
+12        A    Not that I recall.
+13        Q    Any videos?
+14        A    Yes.
+15        Q    What videos did you review?
+16        A    I reviewed a video of the protest in the
+17   intersection of Monroe and approximately Summit area.
+18        Q    Was it an aerial video?
+19        A    I believe one was a ground video and one
+20   might have been an aerial video.
+21        Q    Two videos total?
+22        A    I believe so.
+23   

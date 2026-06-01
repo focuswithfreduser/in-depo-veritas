@@ -1,0 +1,47 @@
+@page {
+  size: A4;
+  margin: 10mm;
+}
+
+/* Prevent orphaned content */
+@media print {
+  /* Force background colors and borders to print */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    break-after: avoid;
+    break-inside: avoid;
+  }
+
+  /* Avoid breaks inside content blocks */
+  .print\\:break-inside-avoid {
+    break-inside: avoid;
+  }
+
+  /* Only break after when explicitly needed */
+  .print\\:break-after-page {
+    break-after: page;
+  }
+
+  /* Break before when starting a new section */
+  .print\\:break-before-page {
+    break-before: page;
+  }
+}
+
+.content {
+  column-count: 2;
+  column-gap: 1mm;
+  column-fill: auto;
+  font-family: Arial, sans-serif;
+  /* line-height: 1.4; */
+}

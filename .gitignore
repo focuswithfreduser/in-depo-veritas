@@ -1,0 +1,46 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+
+
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.env
+.DS_Store
+.env.*
+!.env.example
+!.env.docker
+npm-debug.log*
+
+
+/out
+/test-input-files
+/test-input-files-*
+
+
+.next
+.vercel
+
+# Sentry Config File
+.env.sentry-build-plugin
+
+.trigger
+
+tsconfig.tsbuildinfo
+
+/src/app/generated/prisma
+
+test-newlines.pdf
+
+docker-compose.yml

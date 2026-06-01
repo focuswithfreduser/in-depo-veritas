@@ -1,0 +1,422 @@
+
+
+
+                                                                      1
+
+
+
+       1          IN THE CIRCUIT COURT OF THE FIFTH JUDICIAL CIRCUIT
+                           IN AND FOR [COUNTY] COUNTY, FLORIDA
+       2         
+                 
+       3         [PLAINTIFF NAME], as Personal
+                 Representative of the Estate
+       4         of [DECEDENT NAME], his deceased
+                 wife,
+       5                                   
+                            Plaintiff,            CASE NO. [CASE-NUMBER]   
+       6                                      
+                 vs.                              
+       7                                    
+                 [HEALTH SYSTEM NAME];
+       8         [DOCTOR NAME], DO; [PROVIDER1 NAME],
+                 APRN, and [PROVIDER2 NAME],
+       9         APRN,
+                 
+      10                    Defendants.     
+                 _________________________________/
+      11         
+                 
+      12         VIDEOCONFERENCE     
+                 DEPOSITION OF:           [DEPONENT FULL NAME]
+      13         
+
+      14         DATE:                    [DATE]    
+                 
+      15         
+                 TIME:                    [TIME] to [TIME]
+      16         
+                 
+      17         PLACE:                   Via Zoom videoconference
+                 
+      18         
+                 PURSUANT TO:             Notice by counsel for    
+      19                                  Defendants for purposes of 
+                                          discovery, use at trial or 
+      20                                  such other purposes as are 
+                                          permitted under the Florida   
+      21                                  Rules of Civil Procedure  
+                 
+      22         
+                 BEFORE:                  [REPORTER NAME]
+      23                                  Notary Public, State of  
+                                          Florida at Large
+      24         
+                 
+      25                                  Pages 1 - 55
+                 
+
+
+
+
+
+
+
+                                                                      2
+
+
+
+       1         APPEARANCES:
+
+       2              [PLAINTIFF ATTORNEY NAME], ESQUIRE
+                      [LAW FIRM NAME]
+       3              [ADDRESS LINE 1]
+                      [ADDRESS LINE 2]
+       4              [PHONE NUMBER]
+                                Attorney for Plaintiff 
+       5         
+                      [DEFENSE ATTORNEY NAME], ESQUIRE               
+       6              [LAW FIRM NAME]
+                      [ADDRESS LINE 1]
+       7              [ADDRESS LINE 2]
+                      [PHONE NUMBER]
+       8                        Attorney for Defendants 
+                 
+       9              
+                           
+      10         
+
+      11                               I N D E X
+
+      12                                                        PAGE
+
+      13              DIRECT EXAMINATION BY [DEFENSE ATTORNEY]     3
+
+      14              CROSS-EXAMINATION BY [PLAINTIFF ATTORNEY]   44 
+
+      15              REDIRECT EXAMINATION BY [DEFENSE ATTORNEY]  49    
+
+      16              CERTIFICATE OF OATH                         52               
+
+      17              REPORTER'S CERTIFICATE                      53               
+
+      18              
+                      
+      19         
+
+      20                            E X H I B I T S
+
+      21                                (None.)                                  
+                 
+      22         
+
+      23         
+
+      24         
+
+      25         
+
+
+
+
+
+
+
+
+                                                                      3
+
+
+
+       1                   THE REPORTER:  The attorneys participating 
+
+       2              in the deposition acknowledge that I, [REPORTER NAME], 
+
+       3              the court reporter, am not present with 
+
+       4              the witness and that I will be reporting the 
+
+       5              proceedings and administering the oath remotely.  
+
+       6              This arrangement is pursuant to an order issued 
+
+       7              by the Florida Supreme Court.  
+
+       8                   The parties and their counsel consent to 
+
+       9              this arrangement and waive any objections to 
+
+      10              this manner of reporting.
+
+      11                   Please indicate your agreement by stating 
+
+      12              your name and your agreement on the record.  
+
+      13                   [PLAINTIFF ATTORNEY]:  [PLAINTIFF ATTORNEY] on behalf of the 
+
+      14              plaintiff, I agree.
+
+      15                   [DEFENSE ATTORNEY]:  [DEFENSE ATTORNEY], on behalf of 
+
+      16              the defense.  I agree.
+
+      17                        [DEPONENT FULL NAME],
+
+      18         the deponent herein, being first duly sworn on oath, 
+
+      19         was examined and deposed as follows:
+
+      20                   THE WITNESS:  I do.
+
+      21                          DIRECT EXAMINATION
+                 
+      22         BY [DEFENSE ATTORNEY]:
+
+      23              Q.   Good morning, sir.  My name is [DEFENSE ATTORNEY]. 
+
+      24         I have the privilege of representing the 
+
+      25         defendants in this case.  
+
+
+
+
+
+
+
+
+                                                                      4
+
+
+
+       1                   Have you had your deposition taken before?
+
+       2              A.   No, I haven't.
+
+       3              Q.   Okay.  So I'm going to try to make this as 
+
+       4         easy as possible under what I know will be difficult 
+
+       5         circumstances.  So let me just give you some 
+
+       6         suggestions for the deposition, and I'm sure your 
+
+       7         attorney has prepared you for some of this as well.  
+
+       8                   First and foremost, if you need to take a 
+
+       9         break for any reason whatsoever, just tell me.  We 
+
+      10         will stop for as long as you need, okay?
+
+      11              A.   Okay.
+
+      12              Q.   The other thing that becomes even more 
+
+      13         important since we're across from each other on Zoom 
+
+      14         technology is to make sure we get an audible response 
+
+      15         on the record.  It's very natural for people to say 
+
+      16         "Uh-huh" or "Uh-uh" or things like that.  So if you 
+
+      17         forget, I may ask you, "Is that a yes" or "Is that a 
+
+      18         no."  I'm not trying to be rude.  I'm just trying to 
+
+      19         get a record, okay, sir?
+
+      20              A.   No problem.
+
+      21              Q.   And, finally, if I do ask you a question 
+
+      22         that doesn't make sense or you don't understand what 
+
+      23         I'm asking, just please let me know and I would be 
+
+      24         happy to reask it in a way so we're communicating, 
+
+      25         okay?
+
+
+
+
+
+
+
+
+                                                                      5
+
+
+
+       1              A.   All right. 
+
+       2              Q.   And your full, legal name, sir.  
+
+       3              A.   [DEPONENT FULL NAME]
+
+       4              Q.   And where do you currently live?
+
+       5              A.   [CITY], [STATE].
+
+       6              Q.   How long have you lived in [CITY]?
+
+       7              A.   A year and a half.
+
+       8              Q.   And what caused you to move to [CITY]?
+
+       9              A.   I have family in the [METRO] area.  This is 
+
+      10         near [METRO], and I wanted to live on the water.  
+
+      11              Q.   What did you do -- are you retired or are 
+
+      12         you still working?
+
+      13              A.   I'm retired.  I'm semi-retired.  I just do 
+
+      14         a little work on the side.  I'm a web developer.
+
+      15              Q.   Okay.  What was your professional career?
+
+      16              A.   A web master.
+
+      17              Q.   Okay.  And you say you are semi-retired.  
+
+      18                   When did you go from full time to 
+
+      19         less-than-full-time work?
+
+      20              A.   1966.  I'm sorry.  2006.
+
+      21              Q.   Okay.  And we're going to be talking about 
+
+      22         events primarily that happened in 2019.  Were you 
+
+      23         semi-retired then?
+
+      24              A.   Yes.
+
+      25              Q.   How much were you working in 2019?
+
+
+
+
+
+
+
+
+                                                                      6
+
+
+
+       1              A.   I just worked just probably five or ten 
+
+       2         hours a month so it's basically negligible.
+
+       3                   [DEFENSE ATTORNEY]:  I don't mind directing this 
+
+       4              question to you, [PLAINTIFF ATTORNEY].  It might speed 
+
+       5              things up.  Do you know if you are asserting 
+
+       6              damages for any lost wages on his behalf or is 
+
+       7              that undetermined?  
+
+       8                   [PLAINTIFF ATTORNEY]:  On his behalf, no.
+
+       9                   [DEFENSE ATTORNEY]:  Okay.
+
+      10         BY [DEFENSE ATTORNEY]:  
+
+      11              Q.   Were you working a few hours a month here 
+
+      12         and there in 2019?
+
+      13              A.   Yes.
+
+      14              Q.   Okay.  Was that in the house or out of the 
+
+      15         house?
+
+      16              A.   In the house.
+
+      17              Q.   Okay.  Do you have any marriages prior to 
+
+      18         the one to [DECEDENT FIRST NAME]?
+
+      19              A.   Yes.
+
+      20              Q.   Okay.  And how many, sir?
+
+      21              A.   Two.
+
+      22              Q.   Okay.  And what were the dates of the first 
+
+      23         marriage?
+
+      24              A.   My first marriage was -- that would be in 
+
+      25         the 1960s.  I don't recall the exact year.  I was 
+
+
+
+
+
+
+
+
+                                                                      7
+
+
+
+       1         married to her for ten years, to my first wife [FIRST WIFE NAME] 
+
+       2         [LAST NAME].  
+
+       3                   And then my second wife would be in the -- 
+
+       4         in the 1980s and we were married for 30 years.
+
+       5              Q.   Okay.  And what was her name, sir?
+
+       6              A.   [SECOND WIFE NAME].
+
+       7              Q.   And when did you and [SECOND WIFE NAME] [LAST NAME] cease 
+
+       8         to be married?
+
+       9              A.   She passed away in 2013, I believe.
+
+      10              Q.   Okay.  Do you have any children, sir?
+
+      11              A.   Yes, two sons.
+
+      12              Q.   And do they live locally or out of town?
+
+      13              A.   One lives in [METRO] and one lives in 
+
+      14         [STATE].
+
+      15              Q.   And where in [STATE] does the other son 
+
+      16         live?
+
+      17              A.   [CITY].
+
+      18              Q.   Now, for [DECEDENT FIRST NAME], did she have any children?
+
+      19              A.   One daughter.
+
+      20              Q.   And what's her daughter's name, if you 
+
+      21         know?
+
+      22              A.   [DAUGHTER NAME] [DAUGHTER SURNAME].
+
+      23              Q.   And where does Ms. [DAUGHTER SURNAME] live?
+
+      24              A.   [CITY], [STATE].
+
+      25              Q.   And I understand that [DECEDENT FIRST NAME] had been
