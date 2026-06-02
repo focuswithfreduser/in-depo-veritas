@@ -5,9 +5,10 @@ import { db } from "@/lib/db";
 import { getEmailData } from "@/lib/utils/email";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-
-const ORGANIZATION_FREE_TRIAL_DAYS = 14;
-const ORGANIZATION_FREE_TRIAL_CREDITS = 0;
+import {
+  ORGANIZATION_FREE_TRIAL_CREDITS,
+  ORGANIZATION_FREE_TRIAL_DAYS,
+} from "@/server/utils/organization-defaults";
 
 export const meRouter = createTRPCRouter({
   get: protectedProcedure.query(async (opts) => {
@@ -104,7 +105,12 @@ export const meRouter = createTRPCRouter({
         name: z.string().optional(),
         firstName: z.string().optional(),
         workspaceName: z.string(),
-        joinExistingOrganizationId: z.string().optional(),
+        // NOTE: `joinExistingOrganizationId` was removed in Phase 3. The
+        // previous behaviour let any user with a matching email domain
+        // auto-join a registered organisation with no invitation or approval
+        // (review S9). Joining an existing org now happens exclusively
+        // through the explicit Invitation flow (see `organization.invite` +
+        // `organization.acceptInvitation`).
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -114,81 +120,27 @@ export const meRouter = createTRPCRouter({
 
       const activeOrganizationId = ctx.session.session?.activeOrganizationId;
 
-      // If user has an organization, just update the name
+      // Reusable user-field update (avoids the previous duplicated blocks).
+      const applyUserFieldUpdates = async () => {
+        const updateUserData: Partial<{ name: string; firstName: string }> = {};
+        if (input.name) updateUserData.name = input.name;
+        if (input.firstName) updateUserData.firstName = input.firstName;
+        if (Object.keys(updateUserData).length > 0) {
+          await db.user.update({
+            where: { id: ctx.session.user.id },
+            data: updateUserData,
+          });
+        }
+      };
+
+      // If user has an organization, just update the name + user fields
       if (activeOrganizationId) {
-        const updatedOrganization = await db.organization.update({
+        await db.organization.update({
           where: { id: activeOrganizationId },
           data: { name: input.workspaceName },
         });
-
-        // Update user fields if provided
-        const updateUserData: any = {};
-        if (input.name) {
-          updateUserData.name = input.name;
-        }
-        if (input.firstName) {
-          updateUserData.firstName = input.firstName;
-        }
-
-        if (Object.keys(updateUserData).length > 0) {
-          await db.user.update({
-            where: { id: ctx.session.user.id },
-            data: updateUserData,
-          });
-        }
-
+        await applyUserFieldUpdates();
         return { success: true, organizationId: activeOrganizationId };
-      }
-
-      // If user wants to join an existing organization
-      if (input.joinExistingOrganizationId) {
-        // Verify the organization exists and user has access to it
-        const organization = await db.organization.findFirst({
-          where: {
-            id: input.joinExistingOrganizationId,
-            domains: myDomain ? { some: { domain: myDomain } } : undefined,
-          },
-        });
-
-        if (!organization) {
-          throw new TRPCError({
-            code: "NOT_FOUND",
-            message: "Organization not found or access denied",
-          });
-        }
-
-        // Create membership for the user
-        await db.member.create({
-          data: {
-            organizationId: organization.id,
-            userId: ctx.session.user.id,
-            role: "member", // Regular member when joining existing org
-          },
-        });
-
-        // Update the session to set active organization
-        await db.session.update({
-          where: { id: ctx.session.session!.id },
-          data: { activeOrganizationId: organization.id },
-        });
-
-        // Update user fields if provided
-        const updateUserData: any = {};
-        if (input.name) {
-          updateUserData.name = input.name;
-        }
-        if (input.firstName) {
-          updateUserData.firstName = input.firstName;
-        }
-
-        if (Object.keys(updateUserData).length > 0) {
-          await db.user.update({
-            where: { id: ctx.session.user.id },
-            data: updateUserData,
-          });
-        }
-
-        return { success: true, organizationId: organization.id };
       }
 
       // If user doesn't have an organization and is creating a new one
@@ -213,9 +165,8 @@ export const meRouter = createTRPCRouter({
         },
       });
 
-      // Only add domain if user is creating new org AND no existing org was available
-      // (if they opted out of joining existing org, don't add domain)
-      if (myDomain && !input.joinExistingOrganizationId) {
+      // Claim the email domain only if no existing org already owns it.
+      if (myDomain) {
         const existingOrgWithDomain = await db.organization.findFirst({
           where: {
             domains: { some: { domain: myDomain } },
@@ -240,21 +191,7 @@ export const meRouter = createTRPCRouter({
         data: { activeOrganizationId: newOrganization.id },
       });
 
-      // Update user fields if provided
-      const updateUserData: any = {};
-      if (input.name) {
-        updateUserData.name = input.name;
-      }
-      if (input.firstName) {
-        updateUserData.firstName = input.firstName;
-      }
-
-      if (Object.keys(updateUserData).length > 0) {
-        await db.user.update({
-          where: { id: ctx.session.user.id },
-          data: updateUserData,
-        });
-      }
+      await applyUserFieldUpdates();
 
       return { success: true, organizationId: newOrganization.id };
     }),
@@ -282,41 +219,4 @@ export const meRouter = createTRPCRouter({
       return user;
     }),
 
-  discount: protectedProcedure
-    .input(
-      z.object({
-        discountCode: z.string(),
-      }),
-    )
-    .mutation(async ({ ctx, input }) => {
-      const discountCode = input.discountCode.toUpperCase().trim();
-
-      if (discountCode !== "TLUJURYBALL" && discountCode !== "#TLUJURYBALL") {
-        throw new TRPCError({
-          code: "BAD_REQUEST",
-          message: "Invalid discount code",
-        });
-      }
-
-      // const existing = await db.payment.findFirst({
-      //   where: {
-      //     workspaceId: ctx.session.user.workspaceId,
-      //     paymentType: "DISCOUNT_10",
-      //   },
-      // });
-
-      // if (existing) {
-      //   return { ok: true, existing: true };
-      // }
-
-      // await db.payment.create({
-      //   data: {
-      //     workspaceId: ctx.session.user.workspaceId,
-      //     paymentType: "DISCOUNT_10",
-      //     amount: 0,
-      //   },
-      // });
-
-      return { ok: true };
-    }),
 });

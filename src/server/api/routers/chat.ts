@@ -1,6 +1,7 @@
 import { openai } from "@ai-sdk/openai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedOrganizationProcedure } from "../trpc";
@@ -28,12 +29,13 @@ export const chatRouter = createTRPCRouter({
         "You are a helpful AI assistant that helps users understand and analyze documents. Be concise and accurate in your responses.";
 
       const documentId = input.metadata.documentId;
-      input.messages;
+      const activeOrganizationId = ctx.session.session.activeOrganizationId!;
 
       try {
-        const document = await db.document.findFirstOrThrow({
+        const document = await db.document.findFirst({
           where: {
             id: documentId,
+            organizationId: activeOrganizationId,
             deletedAt: null, // Exclude deleted documents
           },
           include: {
@@ -42,6 +44,10 @@ export const chatRouter = createTRPCRouter({
             abstract: true,
           },
         });
+
+        if (!document) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
 
         const { pages } = await fetchPages(document);
 
@@ -75,6 +81,10 @@ ${documentText}
 
 Please answer questions about this document based on its content. Be concise and accurate in your responses.`;
       } catch (error) {
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+
         console.error("Error fetching document:", error);
         // Fall back to basic system message if document fetch fails
       }

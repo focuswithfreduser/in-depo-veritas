@@ -19,6 +19,7 @@ import { sendEmail } from "@/services/email/resend";
 import { env } from "@/create-env.mjs";
 import { deleteUser } from "@/server/utils/delete-user";
 import { formatEmail } from "@/lib/utils";
+import { TRPCError } from "@trpc/server";
 
 export const adminRouter = createTRPCRouter({
   listFiles: adminProcedure.query(async () => {
@@ -337,20 +338,6 @@ export const adminRouter = createTRPCRouter({
       });
     }),
 
-  cancelJob: adminProcedure
-    .input(
-      z.object({
-        jobId: z.string(),
-      }),
-    )
-    .mutation(async (opts) => {
-      const { jobId } = opts.input;
-      throw new Error("Not implemented");
-      // await cancelSummarizationJob(jobId);
-
-      return { ok: true };
-    }),
-
   getDocument: adminOrApiKeyProcedure
     .input(z.object({ id: z.string() }))
     .query(async (opts) => {
@@ -501,7 +488,12 @@ export const adminRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input }) => {
-      const { email: rawEmail, name, organizationName, sendEmail: shouldSendEmail } = input;
+      const {
+        email: rawEmail,
+        name,
+        organizationName,
+        sendEmail: shouldSendEmail,
+      } = input;
       const email = formatEmail(rawEmail);
 
       // Check if user already exists
@@ -514,9 +506,7 @@ export const adminRouter = createTRPCRouter({
       }
 
       // Generate OTP code (6 digits) only if we're sending email
-      const otp = shouldSendEmail
-        ? Math.floor(100000 + Math.random() * 900000).toString()
-        : null;
+      const otp = shouldSendEmail ? generateNumericOtp() : null;
 
       // Create user and organization in a transaction
       const result = await db.$transaction(async (tx) => {
@@ -588,6 +578,112 @@ export const adminRouter = createTRPCRouter({
       return result;
     }),
 
+  // Suspend a user — restrict access NOW. Optionally auto-lift at expiresAt.
+  // Semantics: banned BEFORE expiresAt; restored AFTER. Pass expiresAt: null
+  // to clear the suspension entirely (unsuspend).
+  setUserSuspension: adminProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        // null    -> clear suspension (unban)
+        // Date    -> suspend until this absolute time (then auto-restore)
+        // omitted -> permanent suspension (banned with no expiry)
+        expiresAt: z.date().nullable().optional(),
+        reason: z.string().optional(),
+        permanent: z.boolean().optional(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { userId, expiresAt, reason, permanent } = input;
+
+      if (userId === ctx.session.user.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot suspend yourself",
+        });
+      }
+
+      await db.user.findUniqueOrThrow({ where: { id: userId } });
+
+      // Unsuspend
+      if (expiresAt === null && !permanent) {
+        const updated = await db.user.update({
+          where: { id: userId },
+          data: { banned: false, banExpires: null, banReason: null },
+          select: { id: true, banned: true, banExpires: true },
+        });
+        return { success: true, ...updated };
+      }
+
+      // Time-limited suspension must be in the future
+      if (expiresAt && expiresAt.getTime() <= Date.now()) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Suspension expiry must be in the future",
+        });
+      }
+
+      const updated = await db.user.update({
+        where: { id: userId },
+        data: {
+          banned: true,
+          banExpires: permanent ? null : expiresAt ?? null,
+          banReason: reason?.trim() || "Suspended by administrator",
+        },
+        select: {
+          id: true,
+          banned: true,
+          banExpires: true,
+          banReason: true,
+        },
+      });
+
+      // Revoke active sessions so the suspension applies immediately.
+      await db.session.deleteMany({ where: { userId } });
+
+      return { success: true, ...updated };
+    }),
+
+  // Grant time-limited access — user has access UNTIL expiresAt, then loses
+  // it. Inverse of suspension. Pass expiresAt: null to clear the limit
+  // (unlimited access).
+  setUserAccessExpiry: adminProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        // null -> remove access limit (unlimited)
+        // Date -> access expires at this absolute time
+        expiresAt: z.date().nullable(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { userId, expiresAt } = input;
+
+      if (userId === ctx.session.user.id) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot set your own access expiry",
+        });
+      }
+
+      await db.user.findUniqueOrThrow({ where: { id: userId } });
+
+      if (expiresAt !== null && expiresAt.getTime() <= Date.now()) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "Access expiry must be in the future",
+        });
+      }
+
+      const updated = await db.user.update({
+        where: { id: userId },
+        data: { accessExpiresAt: expiresAt },
+        select: { id: true, accessExpiresAt: true },
+      });
+
+      return { success: true, ...updated };
+    }),
+
   toggleAdminRole: adminProcedure
     .input(
       z.object({
@@ -631,7 +727,7 @@ export const adminRouter = createTRPCRouter({
       });
 
       // Generate new OTP code (6 digits)
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      const otp = generateNumericOtp();
 
       // Delete any existing verification codes for this user
       await db.verification.deleteMany({
@@ -737,4 +833,10 @@ export function randomString(size: number) {
   const r = (a: string, i: number): string => a + i2hex(i);
   const bytes = crypto.getRandomValues(new Uint8Array(size));
   return Array.from(bytes).reduce(r, "");
+}
+
+function generateNumericOtp() {
+  const arr = new Uint32Array(1);
+  crypto.getRandomValues(arr);
+  return (100000 + (arr[0] % 900000)).toString();
 }

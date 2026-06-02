@@ -18,6 +18,9 @@ export const env = createEnv({
     SCREENSHOT_API_KEY: z.string().min(1),
     USE_TEST_PROVIDERS: z.string().min(1).default("false").optional(),
     TRPC_BASE_URL: z.url(),
+    // Comma-separated list of valid discount codes (case-insensitive match).
+    // Empty / unset = discount feature disabled.
+    DISCOUNT_CODES: z.string().default("").optional(),
   },
 
   /**
@@ -49,6 +52,7 @@ export const env = createEnv({
     SCREENSHOT_API_KEY: process.env.SCREENSHOT_API_KEY,
     USE_TEST_PROVIDERS: process.env.USE_TEST_PROVIDERS ?? "false",
     TRPC_BASE_URL: process.env.TRPC_BASE_URL,
+    DISCOUNT_CODES: process.env.DISCOUNT_CODES ?? "",
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

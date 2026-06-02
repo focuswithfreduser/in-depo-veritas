@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 
 import { ModelProvider } from "@/app/generated/prisma";
 import { db } from "@/lib/db";
@@ -89,8 +90,23 @@ export const documentRouter = createTRPCRouter({
 
   getSignedPDFUrl: protectedOrganizationProcedure
     .input(z.object({ url: z.string() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       const { url } = input;
+      const activeOrganizationId = ctx.session.session.activeOrganizationId!;
+      const isAdmin = ctx.session.user.role === "admin";
+
+      const document = await db.document.findFirst({
+        where: {
+          ...(isAdmin ? {} : { organizationId: activeOrganizationId }),
+          deletedAt: null,
+          OR: [{ fileUrl: url }, { summaryUrl: url }],
+        },
+        select: { id: true },
+      });
+
+      if (!document) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
 
       const uploadUrlData = await getDownloadUrl(url);
 
@@ -106,6 +122,20 @@ export const documentRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       const { documentId, deleteImmediately } = input;
+      const activeOrganizationId = ctx.session.session.activeOrganizationId!;
+
+      const document = await db.document.findFirst({
+        where: {
+          id: documentId,
+          organizationId: activeOrganizationId,
+          deletedAt: null,
+        },
+        select: { id: true },
+      });
+
+      if (!document) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
 
       if (deleteImmediately) {
         await deleteDocument(documentId);
@@ -131,9 +161,22 @@ export const documentRouter = createTRPCRouter({
       const { documentIds, deleteImmediately } = input;
       const activeOrganizationId = ctx.session.session.activeOrganizationId!;
 
+      const documents = await db.document.findMany({
+        where: {
+          id: { in: documentIds },
+          organizationId: activeOrganizationId,
+          deletedAt: null,
+        },
+        select: { id: true },
+      });
+
+      if (documents.length !== new Set(documentIds).size) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
+
       if (deleteImmediately) {
         // Delete documents one by one to handle file deletion
-        for (const documentId of documentIds) {
+        for (const { id: documentId } of documents) {
           await deleteDocument(documentId);
         }
       } else {
@@ -168,11 +211,12 @@ export const documentRouter = createTRPCRouter({
 
   get: protectedOrganizationProcedure
     .input(z.object({ id: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const { id } = input;
+      const activeOrganizationId = ctx.session.session.activeOrganizationId!;
 
       const document = await db.document.findFirstOrThrow({
-        where: { id },
+        where: { id, organizationId: activeOrganizationId, deletedAt: null },
         include: {
           summaryChunks: true,
           metadata: true,

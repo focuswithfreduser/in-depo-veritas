@@ -192,9 +192,51 @@ export const publicProcedure = t.procedure.use(timingMiddleware);
 
 export const protectedProcedure = t.procedure
   .use(timingMiddleware)
-  .use(({ ctx, next }) => {
+  .use(async ({ ctx, next }) => {
     if (!ctx.session?.user) {
       throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    // Per-request access enforcement.
+    // Two independent gates:
+    //  (1) Suspension (banned + optional banExpires): blocked NOW, lifts at
+    //      banExpires. Better Auth only checks this at session-creation, so
+    //      we re-check on every request and lazily clear expired bans.
+    //  (2) Access expiry (accessExpiresAt): user had a positive grant that
+    //      has now run out. We block and revoke sessions.
+    const dbUser = await db.user.findUnique({
+      where: { id: ctx.session.user.id },
+      select: { banned: true, banExpires: true, accessExpiresAt: true },
+    });
+
+    if (dbUser?.banned) {
+      if (dbUser.banExpires && dbUser.banExpires.getTime() < Date.now()) {
+        await db.user.update({
+          where: { id: ctx.session.user.id },
+          data: { banned: false, banExpires: null, banReason: null },
+        });
+      } else {
+        await db.session.deleteMany({
+          where: { userId: ctx.session.user.id },
+        });
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Your account has been suspended.",
+        });
+      }
+    }
+
+    if (
+      dbUser?.accessExpiresAt &&
+      dbUser.accessExpiresAt.getTime() < Date.now()
+    ) {
+      await db.session.deleteMany({
+        where: { userId: ctx.session.user.id },
+      });
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "Your access has expired.",
+      });
     }
 
     return next({
@@ -239,7 +281,7 @@ export const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
   return next({ ctx });
 });
 
-export const adminOrApiKeyProcedure = t.procedure.use(({ ctx, next }) => {
+export const adminOrApiKeyProcedure = publicProcedure.use(({ ctx, next }) => {
   if (ctx.session?.user?.role !== "admin" && !ctx.hasApiKey) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
