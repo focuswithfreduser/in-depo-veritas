@@ -88,8 +88,8 @@ export function ToggleAdminDialog({
             {toggleAdminMutation.isPending
               ? "Processing..."
               : isCurrentlyAdmin
-                ? "Remove Admin"
-                : "Grant Admin"}
+              ? "Remove Admin"
+              : "Grant Admin"}
           </Button>
         </DialogFooter>
       </DialogContent>

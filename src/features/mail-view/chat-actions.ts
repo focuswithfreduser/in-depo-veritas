@@ -1,9 +1,6 @@
 import { ChatMessage } from "@/features/chat/types";
 import type { DocumentListRow } from "./types";
-import {
-  ChatExportDocument,
-  type ChatPdfData,
-} from "./chat-export-pdf";
+import { ChatExportDocument, type ChatPdfData } from "./chat-export-pdf";
 
 const APP_NAME = "In Depo Veritas";
 const DISCLAIMER =

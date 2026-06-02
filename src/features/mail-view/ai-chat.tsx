@@ -1,13 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import {
-  Send,
-  Download,
-  FileDown,
-  FileText,
-  Loader2,
-  X,
-} from "lucide-react";
+import { Send, Download, FileDown, FileText, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";

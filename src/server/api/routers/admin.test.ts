@@ -88,9 +88,11 @@ describe("admin router shape — dead code removed (Phase 3)", () => {
   it("cancelJob is no longer exposed (B4)", async () => {
     const { adminRouter } = await import("./admin");
     // Procedure registry lives on `_def.procedures` in tRPC v11.
-    const procedures = (adminRouter as unknown as {
-      _def: { procedures: Record<string, unknown> };
-    })._def.procedures;
+    const procedures = (
+      adminRouter as unknown as {
+        _def: { procedures: Record<string, unknown> };
+      }
+    )._def.procedures;
     expect(procedures.cancelJob).toBeUndefined();
   });
 });

@@ -112,16 +112,19 @@ export function SuspendUserDialog({
         <DialogHeader>
           <DialogTitle>Suspend User</DialogTitle>
           <DialogDescription>
-            Block <strong>{userName}</strong> from using the app. Choose a
-            date to auto-restore access, or mark as permanent.
+            Block <strong>{userName}</strong> from using the app. Choose a date
+            to auto-restore access, or mark as permanent.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-2">
           {currentBanned && (
-            <div className="rounded-md border border-yellow-200 bg-yellow-50 px-3 py-2 text-sm">
+            <div className="border-yellow-200 bg-yellow-50 rounded-md border px-3 py-2 text-sm">
               {currentBanExpires
-                ? `Currently suspended until ${format(currentBanExpires, "PPP")}.`
+                ? `Currently suspended until ${format(
+                    currentBanExpires,
+                    "PPP",
+                  )}.`
                 : "Currently permanently suspended."}
             </div>
           )}

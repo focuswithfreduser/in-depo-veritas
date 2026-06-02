@@ -21,9 +21,7 @@ describe("buildLegalSummaryPrompt", () => {
       "Previously the witness described the accident.",
     );
     expect(prompt).toContain("<working_summary>");
-    expect(prompt).toContain(
-      "Previously the witness described the accident.",
-    );
+    expect(prompt).toContain("Previously the witness described the accident.");
     expect(prompt).not.toContain("This is the first chunk");
   });
 

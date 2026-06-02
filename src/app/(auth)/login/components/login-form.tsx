@@ -22,7 +22,9 @@ const SECONDS_TO_RESEND = 59;
 async function fetchDevOtpHint(email: string) {
   try {
     const response = await fetch(
-      `/api/dev/last-otp?email=${encodeURIComponent(email.toLowerCase().trim())}`,
+      `/api/dev/last-otp?email=${encodeURIComponent(
+        email.toLowerCase().trim(),
+      )}`,
     );
     if (!response.ok) return null;
     const data = (await response.json()) as { otp?: string | null };
@@ -82,10 +84,9 @@ export function LoginForm({
     onSuccess: async (result) => {
       if (result.error) {
         // Check if the error is due to user not existing
-        const errorMessage =
-          (result.error.message?.toLowerCase() ||
-            result.error.status?.toString() ||
-            "") as string;
+        const errorMessage = (result.error.message?.toLowerCase() ||
+          result.error.status?.toString() ||
+          "") as string;
         if (
           errorMessage.includes("user") &&
           (errorMessage.includes("not found") ||
@@ -290,7 +291,8 @@ export function LoginForm({
                     {devOtpHint}
                   </p>
                   <p className="mt-1 text-xs text-amber-800">
-                    Codes expire quickly. Use this one right after requesting it.
+                    Codes expire quickly. Use this one right after requesting
+                    it.
                   </p>
                 </div>
               )}

@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 
 export type ChatPdfMessage = {
   role: "user" | "assistant" | "system";
@@ -167,7 +161,9 @@ function MetaCell({ label, value }: { label: string; value: string | null }) {
   return (
     <View style={styles.metaCell}>
       <Text style={styles.metaLabel}>{label}</Text>
-      <Text style={styles.metaValue}>{value && value.length ? value : "—"}</Text>
+      <Text style={styles.metaValue}>
+        {value && value.length ? value : "—"}
+      </Text>
     </View>
   );
 }
@@ -203,10 +199,7 @@ export function ChatExportDocument({ data }: { data: ChatPdfData }) {
           <MetaCell label="Deponent" value={metadata.deponent} />
           <MetaCell label="Case number" value={metadata.caseNumber} />
           <MetaCell label="Case title" value={metadata.caseTitle} />
-          <MetaCell
-            label="Deposition date"
-            value={metadata.depositionDate}
-          />
+          <MetaCell label="Deposition date" value={metadata.depositionDate} />
           <MetaCell
             label="Deposition location"
             value={metadata.depositionLocation}
@@ -216,7 +209,9 @@ export function ChatExportDocument({ data }: { data: ChatPdfData }) {
         {/* Transcript */}
         <Text style={styles.sectionTitle}>Conversation</Text>
         {messages.length === 0 ? (
-          <Text style={styles.emptyNote}>No messages in this conversation.</Text>
+          <Text style={styles.emptyNote}>
+            No messages in this conversation.
+          </Text>
         ) : (
           messages.map((message, idx) => {
             const isUser = message.role === "user";

@@ -1,10 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import {
-  absoluteUrl,
-  convertNewlines,
-  formatDate,
-} from "@/components/utils";
+import { absoluteUrl, convertNewlines, formatDate } from "@/components/utils";
 
 describe("formatDate", () => {
   it("formats an ISO date string in en-US long form", () => {

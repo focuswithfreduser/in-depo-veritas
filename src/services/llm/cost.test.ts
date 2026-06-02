@@ -16,11 +16,7 @@ describe("calculateCost", () => {
 
   it("scales linearly with token counts", () => {
     const small = calculateCost(ModelProvider.claude_haiku_4_5, 1_000, 500);
-    const large = calculateCost(
-      ModelProvider.claude_haiku_4_5,
-      10_000,
-      5_000,
-    );
+    const large = calculateCost(ModelProvider.claude_haiku_4_5, 10_000, 5_000);
     expect(large).toBeCloseTo(small * 10, 6);
   });
 
@@ -37,11 +33,7 @@ describe("calculateCost", () => {
 
   it("returns 0 and warns when given an unknown provider", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    const cost = calculateCost(
-      "totally_made_up" as ModelProvider,
-      1000,
-      1000,
-    );
+    const cost = calculateCost("totally_made_up" as ModelProvider, 1000, 1000);
     expect(cost).toBe(0);
     expect(warn).toHaveBeenCalledOnce();
     warn.mockRestore();

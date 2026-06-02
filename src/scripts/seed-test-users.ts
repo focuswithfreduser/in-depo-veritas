@@ -483,7 +483,9 @@ function describeState(user: {
       const lifted = user.banExpires.getTime() < Date.now();
       parts.push(
         lifted
-          ? `SUSPENSION LAPSED (since ${user.banExpires.toISOString().slice(0, 10)})`
+          ? `SUSPENSION LAPSED (since ${user.banExpires
+              .toISOString()
+              .slice(0, 10)})`
           : `SUSPENDED until ${user.banExpires.toISOString().slice(0, 10)}`,
       );
     } else {
@@ -494,8 +496,12 @@ function describeState(user: {
     const expired = user.accessExpiresAt.getTime() <= Date.now();
     parts.push(
       expired
-        ? `ACCESS EXPIRED (since ${user.accessExpiresAt.toISOString().slice(0, 10)})`
-        : `TIME-LIMITED until ${user.accessExpiresAt.toISOString().slice(0, 10)}`,
+        ? `ACCESS EXPIRED (since ${user.accessExpiresAt
+            .toISOString()
+            .slice(0, 10)})`
+        : `TIME-LIMITED until ${user.accessExpiresAt
+            .toISOString()
+            .slice(0, 10)}`,
     );
   }
   if (parts.length === 0) parts.push("ACTIVE");
@@ -575,9 +581,7 @@ function printChatInjectionSnippet(documentId: string, deponent: string) {
   }
 
   // Chat-injection snippet for the primary happy-path user (alice).
-  const alice = results.find(
-    (r) => r.seed.handle === "alice" && r.document,
-  );
+  const alice = results.find((r) => r.seed.handle === "alice" && r.document);
   if (alice?.document) {
     console.log("");
     console.log("─".repeat(72));

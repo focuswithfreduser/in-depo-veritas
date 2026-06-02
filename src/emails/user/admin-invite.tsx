@@ -77,9 +77,7 @@ export default function AdminInviteTemplate({
           </Section>
 
           <Section>
-            <Text style={{ fontWeight: "bold" }}>
-              Login URL: {loginUrl}
-            </Text>
+            <Text style={{ fontWeight: "bold" }}>Login URL: {loginUrl}</Text>
           </Section>
 
           <Section>

@@ -359,7 +359,10 @@ export const organizationRouter = createTRPCRouter({
       });
 
       // Compare emails case-insensitively
-      if (!invitation || formatEmail(invitation.email) !== normalizedSessionEmail) {
+      if (
+        !invitation ||
+        formatEmail(invitation.email) !== normalizedSessionEmail
+      ) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Invitation not found or expired",

@@ -127,8 +127,8 @@ export function CreateUserDialog() {
               {inviteUserMutation.isPending
                 ? "Creating..."
                 : sendEmail
-                  ? "Send Invite"
-                  : "Create User"}
+                ? "Send Invite"
+                : "Create User"}
             </Button>
           </DialogFooter>
         </form>

@@ -163,9 +163,9 @@ export default function OnboardingForm({
       {availableOrganizations.length > 0 && availableOrg && (
         <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm">
           <p>
-            <strong>{availableOrg.name}</strong> already uses your email
-            domain. To join it, ask an owner of that organization to invite
-            you. Otherwise create your own organization below.
+            <strong>{availableOrg.name}</strong> already uses your email domain.
+            To join it, ask an owner of that organization to invite you.
+            Otherwise create your own organization below.
           </p>
         </div>
       )}

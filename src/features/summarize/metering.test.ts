@@ -4,10 +4,7 @@ import {
   deductMeteredUsage,
   updateMeteredUsage,
 } from "@/features/summarize/metering";
-import {
-  cancelMeteredUsage,
-  recordMeteredUsage,
-} from "@/server/utils/stripe";
+import { cancelMeteredUsage, recordMeteredUsage } from "@/server/utils/stripe";
 import { dbMock } from "@/test/mocks/db";
 import {
   makeDocument,

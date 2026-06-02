@@ -34,7 +34,10 @@ function mockStream(...tokens: string[]) {
 // inside the generator body (rejects during iteration).
 async function runChat(
   caller: ReturnType<typeof buildCaller>,
-  input: { messages: Array<{ role: "user"; content: string }>; metadata: { documentId: string } },
+  input: {
+    messages: Array<{ role: "user"; content: string }>;
+    metadata: { documentId: string };
+  },
 ): Promise<string[]> {
   const result = await caller.chat.sendMessage_streaming(input);
   const out: string[] = [];
@@ -55,15 +58,17 @@ describe("chat.sendMessage_streaming security", () => {
   };
 
   it("rejects an unauthenticated caller", async () => {
-    await expect(runChat(buildAnonymousCaller(), baseInput)).rejects.toMatchObject({
+    await expect(
+      runChat(buildAnonymousCaller(), baseInput),
+    ).rejects.toMatchObject({
       code: "UNAUTHORIZED",
     });
   });
 
   it("rejects a caller without an active organization", async () => {
-    await expect(runChat(buildCallerWithoutOrg(), baseInput)).rejects.toMatchObject(
-      { code: "BAD_REQUEST" },
-    );
+    await expect(
+      runChat(buildCallerWithoutOrg(), baseInput),
+    ).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
   it("throws FORBIDDEN when the document is not in the active org", async () => {

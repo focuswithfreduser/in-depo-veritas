@@ -13,7 +13,12 @@ import {
 } from "@/server/api/trpc";
 import { db } from "@/lib/db";
 import { dbMock } from "@/test/mocks/db";
-import { makeOrganization, makeSession, makeTrial, makeSubscription } from "@/test/factories";
+import {
+  makeOrganization,
+  makeSession,
+  makeTrial,
+  makeSubscription,
+} from "@/test/factories";
 
 // A tiny router built only out of the procedures we want to exercise.
 // Each query echoes something derived from ctx so we can assert what

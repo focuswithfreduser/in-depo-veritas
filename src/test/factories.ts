@@ -38,11 +38,13 @@ export type SessionLike = {
   user: UserLike;
 };
 
-export function makeSession(overrides: {
-  user?: Partial<UserLike>;
-  activeOrganizationId?: string | null;
-  sessionId?: string;
-} = {}): SessionLike {
+export function makeSession(
+  overrides: {
+    user?: Partial<UserLike>;
+    activeOrganizationId?: string | null;
+    sessionId?: string;
+  } = {},
+): SessionLike {
   const user = makeUser(overrides.user);
   return {
     session: {
