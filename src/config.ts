@@ -4,10 +4,10 @@ export const FILE_SIZE_LIMIT_MB = 30;
 export const DEPO_PAGES_PER_SUMMARY_CHUNK = 10;
 export const MAX_SUMMARY_CHUNKS_FOR_ABSTRACT = 100;
 
-export const SEND_FROM = "In Depo Veritas <support@updates.indepoveritas.com>";
+export const SEND_FROM = "In Depo Veritas <support@updates.focuswithfred.com>";
 export const WELCOME_FROM =
-  "Support from In Depo Veritas <updates@updates.indepoveritas.com>";
-export const REPLY_TO_EMAIL = "support@indepoveritas.com";
-export const WELCOME_REPLY_TO_EMAIL = "kevin@indepoveritas.com";
-export const ADMIN_EMAIL = "support@indepoveritas.com";
-export const SUPPORT_EMAIL = "support@indepoveritas.com";
+  "Support from In Depo Veritas <updates@updates.focuswithfred.com>";
+export const REPLY_TO_EMAIL = "support@focuswithfred.com";
+export const WELCOME_REPLY_TO_EMAIL = "support@focuswithfred.com";
+export const ADMIN_EMAIL = "support@focuswithfred.com";
+export const SUPPORT_EMAIL = "support@focuswithfred.com";
