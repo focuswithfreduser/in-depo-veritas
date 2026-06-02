@@ -14,10 +14,7 @@ export default async function generateMetadata(
 ) {
   const model = getModelForProvider(modelProvider);
 
-  const initialPages = pages
-    .slice(0, 15)
-    .map((page) => page)
-    .join("\n\n");
+  const initialPages = pages.slice(0, 15).join("\n\n");
 
   const start = Date.now();
   const resp = await pRetry(

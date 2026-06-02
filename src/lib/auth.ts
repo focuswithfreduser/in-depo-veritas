@@ -9,6 +9,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { admin, emailOTP, organization } from "better-auth/plugins";
 import { getActiveOrganization } from "./get-active-org";
+import { setDevOtp } from "./dev-otp-store";
 import { createLazyResource } from "./utils/lazy-resource";
 
 export const auth = createLazyResource(() =>
@@ -110,10 +111,11 @@ export const auth = createLazyResource(() =>
         disableSignUp: true,
         async sendVerificationOTP({ email, otp, type }) {
           if (process.env.NODE_ENV === "development") {
+            setDevOtp(email, otp);
             console.log(
               `‼️ Not sending email to ${email} with OTP ${otp} as we are in development ‼️ `,
             );
-            // return;
+            return;
           }
 
           const emailParams = await getAuthCodeParams(email, otp);

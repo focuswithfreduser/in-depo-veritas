@@ -24,10 +24,17 @@ import Link from "next/link";
 import { CopyToClipboard } from "@/components/copy-to-clipboard";
 import { ToggleAdminDialog } from "./toggle-admin-dialog";
 import { DeleteUserDialog } from "./delete-user-dialog";
+import { SetAccessExpiryDialog } from "./set-access-expiry-dialog";
+import { SuspendUserDialog } from "./suspend-user-dialog";
 import { api } from "@/trpc/react";
 import { toast } from "sonner";
 
 const columnHelper = createColumnHelper<UserAdminView>();
+
+// Sort key for the Access column. `rank` orders by restriction severity
+// (0 = unrestricted → 4 = permanently suspended); `date` is the relevant
+// expiry used for tiebreaking within a rank.
+type AccessSortValue = { rank: number; date: Date | null };
 
 export const columns = [
   columnHelper.accessor("id", {
@@ -194,6 +201,85 @@ export const columns = [
       },
     },
   ),
+  columnHelper.accessor(
+    (row): AccessSortValue => {
+      const now = Date.now();
+      if (row.banned) {
+        // Indefinite suspension sorts strictly after time-limited suspension.
+        if (!row.banExpires || row.banExpires.getTime() <= now) {
+          return { rank: 4, date: null };
+        }
+        return { rank: 3, date: row.banExpires };
+      }
+      if (row.accessExpiresAt) {
+        const expired = row.accessExpiresAt.getTime() <= now;
+        return { rank: expired ? 2 : 1, date: row.accessExpiresAt };
+      }
+      return { rank: 0, date: null };
+    },
+    {
+      id: "accessStatus",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} name={"Access"} />
+      ),
+      cell: ({ row }) => {
+        const banned = row.original.banned;
+        const banExpires = row.original.banExpires;
+        const accessExpiresAt = row.original.accessExpiresAt;
+        const now = Date.now();
+
+        const formatDate = (d: Date) =>
+          d.toLocaleDateString(undefined, {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          });
+
+        if (banned) {
+          return (
+            <div className="min-w-[140px] whitespace-nowrap text-sm">
+              <Badge variant="destructive">Suspended</Badge>
+              {banExpires && banExpires.getTime() > now && (
+                <div className="mt-1 whitespace-nowrap text-xs text-muted-foreground">
+                  until {formatDate(banExpires)}
+                </div>
+              )}
+            </div>
+          );
+        }
+
+        if (accessExpiresAt) {
+          const expired = accessExpiresAt.getTime() <= now;
+          return (
+            <div className="min-w-[140px] whitespace-nowrap text-sm">
+              <Badge
+                variant={expired ? "destructive" : "destructive"}
+                className="whitespace-nowrap"
+              >
+                {expired ? "Access expired" : "Time-limited"}
+              </Badge>
+              <div className="mt-1 whitespace-nowrap text-xs text-muted-foreground">
+                {expired ? "since" : "until"} {formatDate(accessExpiresAt)}
+              </div>
+            </div>
+          );
+        }
+
+        return <span className="text-sm text-muted-foreground">-</span>;
+      },
+      // Sort by access-restriction severity (asc = least → most restricted),
+      // tiebreak by the relevant expiry date (sooner first).
+      sortingFn: (rowA, rowB, columnId) => {
+        const a = rowA.getValue<AccessSortValue>(columnId);
+        const b = rowB.getValue<AccessSortValue>(columnId);
+        if (a.rank !== b.rank) return a.rank - b.rank;
+        if (!a.date && !b.date) return 0;
+        if (!a.date) return 1;
+        if (!b.date) return -1;
+        return a.date.getTime() - b.date.getTime();
+      },
+    },
+  ),
   columnHelper.display({
     id: "actions",
     cell: ({ row }) => {
@@ -203,6 +289,9 @@ export const columns = [
           userName={row.original.name}
           isAdmin={row.original.role === "admin"}
           documentCount={row.original._count.documents}
+          banned={row.original.banned ?? false}
+          banExpires={row.original.banExpires ?? null}
+          accessExpiresAt={row.original.accessExpiresAt ?? null}
         />
       );
     },
@@ -271,14 +360,22 @@ function UserAdminRowActions({
   userName,
   isAdmin,
   documentCount,
+  banned,
+  banExpires,
+  accessExpiresAt,
 }: {
   userId: string;
   userName: string;
   isAdmin: boolean;
   documentCount: number;
+  banned: boolean;
+  banExpires: Date | null;
+  accessExpiresAt: Date | null;
 }) {
   const [toggleAdminDialogOpen, setToggleAdminDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [accessExpiryDialogOpen, setAccessExpiryDialogOpen] = useState(false);
+  const [suspendDialogOpen, setSuspendDialogOpen] = useState(false);
 
   const { data: organizations } = api.admin.getUserOrganizations.useQuery(
     { userId },
@@ -288,8 +385,29 @@ function UserAdminRowActions({
   const impersonateMutation = useMutation({
     mutationFn: async (userId: string) => {
       const { data, error } = await authClient.admin.impersonateUser({
-        userId, // required
+        userId,
       });
+      if (error) {
+        throw error;
+      }
+      return data;
+    },
+    onError: (error: unknown) => {
+      const code =
+        typeof error === "object" && error !== null && "code" in error
+          ? (error as { code?: string }).code
+          : undefined;
+      if (code === "BANNED_USER") {
+        toast.error(
+          "Cannot impersonate — user access is currently restricted. Clear access expiry first.",
+        );
+        return;
+      }
+      const message =
+        typeof error === "object" && error !== null && "message" in error
+          ? String((error as { message?: string }).message)
+          : "Impersonation failed";
+      toast.error(message);
     },
   });
 
@@ -317,6 +435,12 @@ function UserAdminRowActions({
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setToggleAdminDialogOpen(true)}>
             {isAdmin ? "Remove Admin" : "Make Admin"}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setAccessExpiryDialogOpen(true)}>
+            Set Access Expiry
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setSuspendDialogOpen(true)}>
+            {banned ? "Manage Suspension" : "Suspend User"}
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => resendInviteMutation.mutate({ userId })}
@@ -346,6 +470,21 @@ function UserAdminRowActions({
         userName={userName}
         documentCount={documentCount}
         organizations={organizations || []}
+      />
+      <SetAccessExpiryDialog
+        open={accessExpiryDialogOpen}
+        onOpenChange={setAccessExpiryDialogOpen}
+        userId={userId}
+        userName={userName}
+        currentAccessExpiresAt={accessExpiresAt}
+      />
+      <SuspendUserDialog
+        open={suspendDialogOpen}
+        onOpenChange={setSuspendDialogOpen}
+        userId={userId}
+        userName={userName}
+        currentBanned={banned}
+        currentBanExpires={banExpires}
       />
     </>
   );

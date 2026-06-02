@@ -54,6 +54,7 @@ export default async function generateChunk(
   const prompt = buildLegalSummaryPrompt(asString, previousSummaries);
 
   const model = getModelForProvider(modelProvider);
+  const start = Date.now();
 
   const resp = await pRetry(
     async () => {
@@ -75,7 +76,7 @@ export default async function generateChunk(
 
   const data = {
     summary: finalSummary,
-    timeInMs: resp.usage.totalTokens ?? 0,
+    timeInMs: Date.now() - start,
     inputTokenCount: resp.usage.inputTokens ?? 0,
     outputTokenCount: resp.usage.outputTokens ?? 0,
     estimatedCost: calculateCost(

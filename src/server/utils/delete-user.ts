@@ -47,10 +47,7 @@ export async function deleteUser(userId: string) {
         },
       });
     } catch (error) {
-      console.warn(
-        `Failed to delete organizations for user ${userId}:`,
-        error,
-      );
+      console.warn(`Failed to delete organizations for user ${userId}:`, error);
       throw error; // Re-throw as this is critical
     }
   }

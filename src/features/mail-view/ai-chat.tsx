@@ -1,11 +1,17 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Send, Download, Loader2, X } from "lucide-react";
+import { Send, Download, FileDown, FileText, Loader2, X } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { DocumentListRow } from "./types";
 import { useChatStore, StoredChatMessage } from "@/stores/chat-store";
-import { downloadChatAsText } from "./chat-actions";
+import {
+  downloadChatAsMarkdown,
+  downloadChatAsPdf,
+  downloadChatAsText,
+  filterVisibleMessages,
+} from "./chat-actions";
 import { ClearChatModal } from "./clear-chat-modal";
 import { Markdown } from "@/components/markdown";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -25,7 +31,9 @@ export function AIChat({
 }) {
   const [input, setInput] = useState("");
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
+  const [isExportingPdf, setIsExportingPdf] = useState(false);
   const { saveChat, loadChat, clearChat } = useChatStore();
+  const { data: me } = api.me.get.useQuery();
 
   // Load initial messages from store
   const storedMessages = loadChat(selectedDocument.id);
@@ -99,12 +107,44 @@ export function AIChat({
     downloadChatAsText(messages, selectedDocument.fileName);
   };
 
+  const handleExportPdf = async () => {
+    if (isExportingPdf) return;
+    setIsExportingPdf(true);
+    try {
+      await downloadChatAsPdf({
+        messages,
+        document: selectedDocument,
+        exportedBy: me?.name || me?.email || "Unknown user",
+      });
+    } catch (err) {
+      console.error("Failed to export chat PDF:", err);
+      toast.error("Failed to export chat as PDF");
+    } finally {
+      setIsExportingPdf(false);
+    }
+  };
+
+  const handleExportMarkdown = () => {
+    try {
+      downloadChatAsMarkdown({
+        messages,
+        document: selectedDocument,
+        exportedBy: me?.name || me?.email || "Unknown user",
+      });
+    } catch (err) {
+      console.error("Failed to export chat Markdown:", err);
+      toast.error("Failed to export chat as Markdown");
+    }
+  };
+
+  const visibleMessageCount = filterVisibleMessages(messages).length;
+
   return (
     <div className="flex h-full w-full flex-col bg-background px-4">
       <div className="flex min-h-0 flex-1 flex-col gap-4">
-        {/* Clear button always visible at the top */}
+        {/* Toolbar — clear + export PDF */}
         {messages.length > 0 ? (
-          <div className="flex justify-start">
+          <div className="flex items-center justify-between">
             <Button
               variant="ghost"
               size="sm"
@@ -113,7 +153,36 @@ export function AIChat({
               title="Clear chat"
             >
               <X className="h-4 w-4" />
+              <span className="sr-only">Clear chat</span>
             </Button>
+            <div className="flex items-center gap-1">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleExportMarkdown}
+                disabled={visibleMessageCount === 0}
+                className="h-6 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
+                title="Export chat as Markdown"
+              >
+                <FileText className="h-3 w-3" />
+                Export MD
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleExportPdf}
+                disabled={isExportingPdf || visibleMessageCount === 0}
+                className="h-6 gap-1 px-2 text-xs text-muted-foreground hover:text-foreground"
+                title="Export chat as PDF"
+              >
+                {isExportingPdf ? (
+                  <Loader2 className="h-3 w-3 animate-spin" />
+                ) : (
+                  <FileDown className="h-3 w-3" />
+                )}
+                Export PDF
+              </Button>
+            </div>
           </div>
         ) : null}
         {/* Chat messages area - always present, scrollable */}

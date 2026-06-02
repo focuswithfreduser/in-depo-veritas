@@ -6,7 +6,6 @@ import { toast } from "sonner";
 import { LoadingButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { api } from "@/trpc/react";
 import { Logo } from "./logo";
 import Link from "next/link";
@@ -40,11 +39,11 @@ export default function OnboardingForm({
   const router = useRouter();
   const utils = api.useUtils();
 
-  // New state for organization handling
-  const [joinExistingOrg, setJoinExistingOrg] = useState(
-    availableOrganizations.length > 0,
-  );
-  const availableOrg = availableOrganizations[0]; // Use first available organization
+  // Informational only: surfaced to nudge the user to ask for an invitation
+  // instead of silently auto-joining (which used to happen here and was a
+  // self-join vulnerability — see review S9). Joining now requires an
+  // explicit Invitation from an org owner.
+  const availableOrg = availableOrganizations[0];
 
   const updateMutation = api.me.update.useMutation();
 
@@ -74,15 +73,10 @@ export default function OnboardingForm({
     setFormData((prev) => ({ ...prev, organizationName: e.target.value }));
   };
 
-  const handleJoinOrgChange = (checked: boolean) => {
-    setJoinExistingOrg(checked);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate based on whether joining existing org or creating new one
-    if (!joinExistingOrg && !formData.organizationName.trim()) {
+    if (!formData.organizationName.trim()) {
       toast.error("Organization name is required");
       return;
     }
@@ -93,12 +87,7 @@ export default function OnboardingForm({
       await updateMutation.mutateAsync({
         name: formData.name.trim(),
         firstName: formData.firstName?.trim(),
-        workspaceName: joinExistingOrg
-          ? availableOrg.name
-          : formData.organizationName.trim(),
-        joinExistingOrganizationId: joinExistingOrg
-          ? availableOrg.id
-          : undefined,
+        workspaceName: formData.organizationName.trim(),
       });
 
       await utils.me.get.invalidate();
@@ -170,48 +159,31 @@ export default function OnboardingForm({
         />
       </div>
 
-      {/* Organization Selection */}
-      {availableOrganizations.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="joinOrg"
-              checked={joinExistingOrg}
-              onCheckedChange={handleJoinOrgChange}
-            />
-            <Label
-              htmlFor="joinOrg"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Join <strong>{availableOrg.name}</strong>
-            </Label>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            We found an existing organization that matches your email domain.
-            You can join it or create a new one.
+      {/* Informational notice when another org already uses this email domain */}
+      {availableOrganizations.length > 0 && availableOrg && (
+        <div className="rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-sm">
+          <p>
+            <strong>{availableOrg.name}</strong> already uses your email domain.
+            To join it, ask an owner of that organization to invite you.
+            Otherwise create your own organization below.
           </p>
         </div>
       )}
 
-      {/* Show organization name input only if not joining existing org or no orgs available */}
-      {(!joinExistingOrg || availableOrganizations.length === 0) && (
-        <div className="space-y-2">
-          <Label htmlFor="organizationName">Your Firm</Label>
-          <Input
-            id="organizationName"
-            type="text"
-            placeholder="Your firm or organization name"
-            value={formData.organizationName}
-            onChange={handleOrganizationNameChange}
-            required
-          />
-        </div>
-      )}
+      <div className="space-y-2">
+        <Label htmlFor="organizationName">Your Firm</Label>
+        <Input
+          id="organizationName"
+          type="text"
+          placeholder="Your firm or organization name"
+          value={formData.organizationName}
+          onChange={handleOrganizationNameChange}
+          required
+        />
+      </div>
 
       <LoadingButton type="submit" isLoading={loading}>
-        {joinExistingOrg && availableOrganizations.length > 0
-          ? `Join ${availableOrg.name}`
-          : "Complete Setup"}
+        Complete Setup
       </LoadingButton>
     </form>
   );

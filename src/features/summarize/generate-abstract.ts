@@ -22,11 +22,12 @@ export default async function generateAbstract(
 
   const model = getModelForProvider(modelProvider);
   const summary = summaryChunks
-    .splice(0, MAX_SUMMARY_CHUNKS_FOR_ABSTRACT)
+    .slice(0, MAX_SUMMARY_CHUNKS_FOR_ABSTRACT)
     .map((chunk) => chunk.summary)
     .join("\n\n");
 
   const prompt = getAbstractPrompt(summary);
+  const start = Date.now();
 
   const resp = await pRetry(
     async () => {
@@ -58,7 +59,7 @@ export default async function generateAbstract(
         },
       },
       id: summaryRequestId,
-      timeInMs: resp.usage.totalTokens ?? 0,
+      timeInMs: Date.now() - start,
       inputTokenCount: resp.usage.inputTokens ?? 0,
       outputTokenCount: resp.usage.outputTokens ?? 0,
       estimatedCost: calculateCost(

@@ -3,6 +3,10 @@
         {
             "path": "/api/cron/cleanup-old-documents",
             "schedule": "0 2 * * *"
+        },
+        {
+            "path": "/api/cron/cleanup-expired-bans",
+            "schedule": "0 * * * *"
         }
     ]
 }

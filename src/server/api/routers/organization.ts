@@ -10,6 +10,10 @@ import { sendEmail } from "@/services/email/resend";
 import { getTeamInvitationEmailParams } from "@/emails/user/team-invitation";
 import { env } from "@/create-env.mjs";
 import { formatEmail } from "@/lib/utils";
+import {
+  ORGANIZATION_FREE_TRIAL_CREDITS,
+  ORGANIZATION_FREE_TRIAL_DAYS,
+} from "@/server/utils/organization-defaults";
 
 export const organizationRouter = createTRPCRouter({
   listTeamMembers: protectedOrganizationProcedure.query(async ({ ctx }) => {
@@ -309,8 +313,8 @@ export const organizationRouter = createTRPCRouter({
           name: input.name,
           trial: {
             create: {
-              endsAt: addDays(new Date(), 14),
-              creditsAvailable: 1,
+              endsAt: addDays(new Date(), ORGANIZATION_FREE_TRIAL_DAYS),
+              creditsAvailable: ORGANIZATION_FREE_TRIAL_CREDITS,
             },
           },
         },
@@ -355,7 +359,10 @@ export const organizationRouter = createTRPCRouter({
       });
 
       // Compare emails case-insensitively
-      if (!invitation || formatEmail(invitation.email) !== normalizedSessionEmail) {
+      if (
+        !invitation ||
+        formatEmail(invitation.email) !== normalizedSessionEmail
+      ) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Invitation not found or expired",

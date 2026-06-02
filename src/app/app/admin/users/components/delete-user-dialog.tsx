@@ -67,7 +67,7 @@ export function DeleteUserDialog({
         <div className="py-4">
           <div className="space-y-2 text-sm">
             <p className="font-medium">This will delete:</p>
-            <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-2">
+            <ul className="ml-2 list-inside list-disc space-y-1 text-muted-foreground">
               <li>
                 {documentCount} document{documentCount !== 1 ? "s" : ""} and
                 their associated data
@@ -81,7 +81,7 @@ export function DeleteUserDialog({
                   This will also delete the following organization
                   {soleMemberOrgs.length !== 1 ? "s" : ""}:
                 </p>
-                <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-2 mt-1">
+                <ul className="ml-2 mt-1 list-inside list-disc space-y-1 text-muted-foreground">
                   {soleMemberOrgs.map((org) => (
                     <li key={org.name}>{org.name}</li>
                   ))}
@@ -94,12 +94,12 @@ export function DeleteUserDialog({
                   This will remove them from the following organization
                   {sharedOrgs.length !== 1 ? "s" : ""}:
                 </p>
-                <ul className="list-disc list-inside space-y-1 text-muted-foreground ml-2 mt-1">
+                <ul className="ml-2 mt-1 list-inside list-disc space-y-1 text-muted-foreground">
                   {sharedOrgs.map((org) => (
                     <li key={org.name}>{org.name}</li>
                   ))}
                 </ul>
-                <p className="text-xs text-muted-foreground mt-2">
+                <p className="mt-2 text-xs text-muted-foreground">
                   These organizations will not be deleted as they have other
                   members
                 </p>

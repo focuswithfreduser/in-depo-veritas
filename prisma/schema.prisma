@@ -32,6 +32,11 @@ model User {
   banReason  String?
   banExpires DateTime?
 
+  // Time-limited grant: user has access until this date (then loses it).
+  // Distinct from banned/banExpires (which is the inverse — restricted now,
+  // restored at banExpires).
+  accessExpiresAt DateTime?
+
   shouldEmailOnComplete Boolean @default(true)
   marketingEmails       Boolean @default(true)
   productUpdates        Boolean @default(true)

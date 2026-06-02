@@ -19,6 +19,21 @@ import { AuthTestimonials } from "../../components/auth-testimonials";
 
 const SECONDS_TO_RESEND = 59;
 
+async function fetchDevOtpHint(email: string) {
+  try {
+    const response = await fetch(
+      `/api/dev/last-otp?email=${encodeURIComponent(
+        email.toLowerCase().trim(),
+      )}`,
+    );
+    if (!response.ok) return null;
+    const data = (await response.json()) as { otp?: string | null };
+    return data.otp ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export function LoginForm({
   className,
   ...props
@@ -32,6 +47,7 @@ export function LoginForm({
   const [canResend, setCanResend] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [showOtpStep, setShowOtpStep] = useState(false);
+  const [devOtpHint, setDevOtpHint] = useState<string | null>(null);
 
   const verificationCodeInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -65,13 +81,12 @@ export function LoginForm({
         type: "sign-in",
       });
     },
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       if (result.error) {
         // Check if the error is due to user not existing
-        const errorMessage =
-          (result.error.message?.toLowerCase() ||
-            result.error.status?.toString() ||
-            "") as string;
+        const errorMessage = (result.error.message?.toLowerCase() ||
+          result.error.status?.toString() ||
+          "") as string;
         if (
           errorMessage.includes("user") &&
           (errorMessage.includes("not found") ||
@@ -88,7 +103,15 @@ export function LoginForm({
         setShowOtpStep(true);
         setResendTimer(SECONDS_TO_RESEND);
         setCanResend(false);
-        toast.success("Verification code sent to your email!");
+        setVerificationCodeInput("");
+        setIsCodeInvalid(undefined);
+        const otpHint = await fetchDevOtpHint(email);
+        setDevOtpHint(otpHint);
+        toast.success(
+          otpHint
+            ? "Development mode: use the code shown below."
+            : "Verification code sent to your email!",
+        );
       }
     },
     onError: () => {
@@ -130,13 +153,21 @@ export function LoginForm({
         type: "sign-in",
       });
     },
-    onSuccess: (result) => {
+    onSuccess: async (result) => {
       if (result.error) {
         toast.error("Failed to resend verification code. Please try again.");
       } else {
         setResendTimer(SECONDS_TO_RESEND);
         setCanResend(false);
-        toast.success("Verification code resent!");
+        setVerificationCodeInput("");
+        setIsCodeInvalid(undefined);
+        const otpHint = await fetchDevOtpHint(email);
+        setDevOtpHint(otpHint);
+        toast.success(
+          otpHint
+            ? "Development mode: use the new code shown below."
+            : "Verification code resent!",
+        );
       }
     },
     onError: () => {
@@ -179,6 +210,7 @@ export function LoginForm({
     setVerificationCodeInput("");
     setIsCodeInvalid(undefined);
     setCanResend(false);
+    setDevOtpHint(null);
   }
 
   return (
@@ -251,6 +283,19 @@ export function LoginForm({
                   />
                 </div>
               </div>
+
+              {devOtpHint && (
+                <div className="rounded-md border border-amber-300 bg-amber-50 p-3 text-center text-sm text-amber-950">
+                  <p className="font-medium">Development login code</p>
+                  <p className="mt-1 font-mono text-lg tracking-widest">
+                    {devOtpHint}
+                  </p>
+                  <p className="mt-1 text-xs text-amber-800">
+                    Codes expire quickly. Use this one right after requesting
+                    it.
+                  </p>
+                </div>
+              )}
 
               <form className="space-y-4" onSubmit={handleOtpSubmit}>
                 <div className="flex flex-col items-center space-y-4">

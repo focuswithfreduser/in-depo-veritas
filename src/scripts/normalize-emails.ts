@@ -84,9 +84,7 @@ async function normalizeExistingEmails() {
         where: { id: invitation.id },
         data: { email: normalizedEmail },
       });
-      console.log(
-        `  ✓ Invitation: ${invitation.email} -> ${normalizedEmail}`,
-      );
+      console.log(`  ✓ Invitation: ${invitation.email} -> ${normalizedEmail}`);
     }
   }
 

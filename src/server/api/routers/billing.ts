@@ -13,11 +13,28 @@ import { $Enums, Subscription } from "@/app/generated/prisma";
 import { TRPCError } from "@trpc/server";
 
 export type UsageStats =
-  | { type: "subscription"; used: Number; periodStart: Date; periodEnd: Date }
-  | { type: "trial"; used: Number; available: Number; endsAt: Date }
-  | { type: "freeForever"; used: Number };
+  | { type: "subscription"; used: number; periodStart: Date; periodEnd: Date }
+  | { type: "trial"; used: number; available: number; endsAt: Date }
+  | { type: "freeForever"; used: number };
 
-const DISCOUNT_CODES = ["JuryBallVegas2025", "JuryBallFriends"];
+/**
+ * Valid discount codes are configured via the `DISCOUNT_CODES` env var
+ * (comma-separated). Matching is case-insensitive. An empty list disables
+ * the discount feature — `billing.applyDiscountCode` will always reject.
+ *
+ * Reads `process.env` directly (rather than the t3-oss `env` proxy) so that
+ * operators can rotate the list without redeploying, and so that tests can
+ * use `vi.stubEnv` to drive each scenario. The values are non-sensitive
+ * (already shipped to users when they apply a code), so the validated env
+ * is overkill here.
+ */
+const getDiscountCodes = (): string[] => {
+  const raw = process.env.DISCOUNT_CODES ?? "";
+  return raw
+    .split(",")
+    .map((code) => code.trim())
+    .filter((code) => code.length > 0);
+};
 
 export const billingRouter = createTRPCRouter({
   listSubscriptions: protectedOrganizationProcedure.query(async ({ ctx }) => {
@@ -138,7 +155,7 @@ export const billingRouter = createTRPCRouter({
       });
 
       if (subscription) {
-        let numDocs: Number;
+        let numDocs: number;
         if (input.live) {
           const meter = await getMeter(subscription.plan);
           numDocs = await getMeteredUsage(
@@ -196,7 +213,7 @@ export const billingRouter = createTRPCRouter({
       const normalizedInputCode = input.code.trim().toLowerCase();
 
       // Check if the discount code is valid (case-insensitive)
-      const matchedCode = DISCOUNT_CODES.find(
+      const matchedCode = getDiscountCodes().find(
         (code) => code.toLowerCase() === normalizedInputCode,
       );
 
