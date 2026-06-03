@@ -57,7 +57,7 @@ export const auth = createLazyResource(() =>
             // Send admin notification email
             if (process.env.NODE_ENV === "development") {
               console.log(
-                `‼️ Not sending admin notification email to ${user.email} as we are in development ‼️ `,
+                `Not sending admin notification email to ${user.email} as we are in development`,
               );
             } else {
               try {
@@ -113,7 +113,7 @@ export const auth = createLazyResource(() =>
           if (process.env.NODE_ENV === "development") {
             setDevOtp(email, otp);
             console.log(
-              `‼️ Not sending email to ${email} with OTP ${otp} as we are in development ‼️ `,
+              `Not sending email to ${email} with OTP ${otp} as we are in development`,
             );
             return;
           }

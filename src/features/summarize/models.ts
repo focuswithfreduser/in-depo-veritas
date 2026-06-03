@@ -37,8 +37,6 @@ const fakeModel = {
   modelId: "fake-model",
 
   doGenerate: async (options: any) => {
-    console.log(`${useFake ? "using fake model" : "using real model"}`);
-
     // Check if this is an object generation request by looking at the mode
     if (
       options.mode?.type === "object-json" ||

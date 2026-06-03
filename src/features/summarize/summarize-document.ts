@@ -34,10 +34,7 @@ export async function summarizeDocument(
 
   // Generate metadata if it doesn't exist
   if (!document.metadata) {
-    console.log(`${documentId} generating metadata`);
     await generateMetadata(documentId, document.modelProvider, pages);
-  } else {
-    console.log(`${documentId} metadata already exists`);
   }
 
   const todo = chunks.filter((chunk) => {
@@ -48,17 +45,10 @@ export async function summarizeDocument(
     return !existingSummary;
   });
 
-  if (todo.length === 0) {
-    console.log(`${documentId} no chunks remaining to summarize`);
-  }
-
   // Keep track of all chunks (existing + new) in memory
   const generatedChunks: SummaryChunk[] = [...document.summaryChunks];
 
   for (const chunk of todo) {
-    console.log(
-      `${documentId} generating chunk ${chunk.startPage}-${chunk.endPage}`,
-    );
     const newChunk = await generateChunk(
       document,
       chunk.startPage,
@@ -74,17 +64,12 @@ export async function summarizeDocument(
 
   // Generate abstract if it doesn't exist
   if (!document.abstract) {
-    console.log(`${documentId} generating abstract`);
     await generateAbstract(
       documentId,
       document.modelProvider,
       generatedChunks, // Use our in-memory chunks instead of fetching again
     );
-  } else {
-    console.log(`${documentId} abstract already exists`);
   }
-
-  console.log(`${documentId} completed`);
 
   await db.document.update({
     where: { id: documentId },

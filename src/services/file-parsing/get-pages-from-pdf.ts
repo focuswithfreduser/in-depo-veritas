@@ -14,7 +14,7 @@ export async function getPagesFromPDF(buffer: ArrayBuffer): Promise<string[]> {
   // if any page is longer than MAX_CHARACTERS_PER_PAGE, throw an error
   for (const page of cleanedPages) {
     if (page.length > MAX_CHARACTERS_PER_PAGE) {
-      throw new Error("‼️ something is not right, PDF page is too long");
+      throw new Error("PDF page is too long");
     }
   }
 

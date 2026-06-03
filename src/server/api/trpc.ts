@@ -40,12 +40,8 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     });
     session = authSession;
     user = authSession?.user || null;
-  } catch (error) {
+  } catch {
     // Session doesn't exist or is invalid - this is expected for public endpoints
-    console.log(
-      "🔓 No valid session found:",
-      error instanceof Error ? error.message : "Unknown error",
-    );
   }
 
   return {
@@ -107,21 +103,14 @@ export const createTRPCRouter = t.router;
  * You can remove this if you don't like it, but it can help catch unwanted waterfalls by simulating
  * network latency that would occur in production but not in local development.
  */
-const timingMiddleware = t.middleware(async ({ next, path }) => {
-  const start = Date.now();
-
+const timingMiddleware = t.middleware(async ({ next }) => {
   if (t._config.isDev) {
     // artificial delay in dev
     const waitMs = Math.floor(Math.random() * 400) + 100;
     await new Promise((resolve) => setTimeout(resolve, waitMs));
   }
 
-  const result = await next();
-
-  const end = Date.now();
-  console.log(`[TRPC] ${path} took ${end - start}ms to execute`);
-
-  return result;
+  return next();
 });
 
 export const requiresSubscriptionMiddleware = t.middleware(
@@ -129,7 +118,7 @@ export const requiresSubscriptionMiddleware = t.middleware(
     if (!ctx.session || !ctx.session.session.activeOrganizationId) {
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "No active organization ‼️",
+        message: "No active organization",
       });
     }
 
@@ -254,7 +243,7 @@ export const protectedOrganizationProcedure = protectedProcedure.use(
     if (!ctx.session?.session.activeOrganizationId) {
       throw new TRPCError({
         code: "BAD_REQUEST",
-        message: "No active organization ‼️",
+        message: "No active organization",
       });
     }
 

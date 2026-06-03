@@ -45,31 +45,31 @@ async function normalizeExistingEmails() {
 
   // Report conflicts
   if (conflicts.length > 0) {
-    console.log("\n⚠️  CONFLICTS DETECTED - Manual resolution required:");
+    console.log("\nCONFLICTS DETECTED - Manual resolution required:");
     conflicts.forEach((c) => console.log(c));
     console.log("\nResolve conflicts before running updates.\n");
   }
 
   // Report planned updates
-  console.log(`\n📝 Planned updates: ${updates.length}`);
+  console.log(`\nPlanned updates: ${updates.length}`);
   updates.forEach((u) => console.log(`  ${u.oldEmail} -> ${u.newEmail}`));
 
   // DRY RUN by default
   if (process.env.APPLY_UPDATES !== "true") {
     console.log(
-      "\n🔒 DRY RUN - No changes made. Set APPLY_UPDATES=true to apply.\n",
+      "\nDRY RUN - No changes made. Set APPLY_UPDATES=true to apply.\n",
     );
     return;
   }
 
   // Apply updates
-  console.log("\n🚀 Applying updates...");
+  console.log("\nApplying updates...");
   for (const update of updates) {
     await db.user.update({
       where: { id: update.id },
       data: { email: update.newEmail },
     });
-    console.log(`  ✓ Updated ${update.oldEmail} -> ${update.newEmail}`);
+    console.log(`  Updated ${update.oldEmail} -> ${update.newEmail}`);
   }
 
   // Also normalize invitations
@@ -84,7 +84,7 @@ async function normalizeExistingEmails() {
         where: { id: invitation.id },
         data: { email: normalizedEmail },
       });
-      console.log(`  ✓ Invitation: ${invitation.email} -> ${normalizedEmail}`);
+      console.log(`  Invitation: ${invitation.email} -> ${normalizedEmail}`);
     }
   }
 
@@ -101,12 +101,12 @@ async function normalizeExistingEmails() {
         data: { identifier: normalizedIdentifier },
       });
       console.log(
-        `  ✓ Verification: ${verification.identifier} -> ${normalizedIdentifier}`,
+        `  Verification: ${verification.identifier} -> ${normalizedIdentifier}`,
       );
     }
   }
 
-  console.log("\n✅ Migration complete!\n");
+  console.log("\nMigration complete!\n");
 }
 
 normalizeExistingEmails().catch(console.error);

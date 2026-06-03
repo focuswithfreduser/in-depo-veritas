@@ -67,19 +67,31 @@ export const chatRouter = createTRPCRouter({
           }
         });
 
-        // Filter pages array based on relevant page numbers
-        // pages array is 0-indexed, but page numbers are 1-indexed
-        const relevantPages = pages.filter((_, index) =>
-          relevantPageNumbers.has(index + 1),
-        );
+        // Prefer the pages covered by relevant summary chunks, but fall back to
+        // the full document when no chunks have been generated yet (e.g. the
+        // summary is still processing) or none are marked relevant. Without this
+        // fallback the model received an empty context and replied that the
+        // document was empty even though its text was available. (BUG-001)
+        // pages array is 0-indexed, but page numbers are 1-indexed.
+        const relevantPages =
+          relevantPageNumbers.size > 0
+            ? pages.filter((_, index) => relevantPageNumbers.has(index + 1))
+            : pages;
 
-        const documentText = relevantPages.join("\n\n");
-        systemMessage = `You are a helpful AI assistant analyzing the document titled "${document.fileName}".
+        const documentText = relevantPages.join("\n\n").trim();
+
+        if (documentText.length > 0) {
+          systemMessage = `You are a helpful AI assistant analyzing the document titled "${document.fileName}".
 
 Document Content:
 ${documentText}
 
 Please answer questions about this document based on its content. Be concise and accurate in your responses.`;
+        } else {
+          // No text is available yet — most likely the document is still being
+          // prepared. Be honest about that instead of claiming it is empty.
+          systemMessage = `You are a helpful AI assistant for the document titled "${document.fileName}". Its text is not available yet — it may still be uploading or processing. Let the user know the document is still being prepared and ask them to try again in a few moments. Do not claim the document is empty.`;
+        }
       } catch (error) {
         if (error instanceof TRPCError) {
           throw error;

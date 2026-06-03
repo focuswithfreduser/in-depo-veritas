@@ -130,7 +130,6 @@ export function LoginForm({
       if (result.error) {
         setIsCodeInvalid(true);
         toast.error("Invalid verification code. Please try again.");
-        console.log(result);
       } else {
         setIsSuccess(true);
         // toast.success("Successfully logged in!");

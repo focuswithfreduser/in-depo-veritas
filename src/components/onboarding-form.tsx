@@ -91,7 +91,7 @@ export default function OnboardingForm({
       });
 
       await utils.me.get.invalidate();
-      toast.success("Account ready 🎉");
+      toast.success("Account ready");
       router.push("/app");
     } catch (error) {
       toast.error("Failed to update profile");
