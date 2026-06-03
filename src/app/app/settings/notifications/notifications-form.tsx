@@ -153,8 +153,6 @@ export function NotificationsForm() {
     );
   }
 
-  console.log(me);
-
   return (
     <NotificationsFormInner
       marketingEmails={me.marketingEmails}

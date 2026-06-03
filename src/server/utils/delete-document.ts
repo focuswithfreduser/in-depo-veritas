@@ -30,7 +30,6 @@ export async function deleteDocument(documentId: string) {
   if (document.triggerId && document.status !== "complete") {
     try {
       await runs.cancel(document.triggerId);
-      console.log(`Cancelled trigger run ${document.triggerId}`);
     } catch (error) {
       console.warn(
         `Failed to cancel trigger run ${document.triggerId}:`,

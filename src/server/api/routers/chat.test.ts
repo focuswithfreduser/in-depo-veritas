@@ -8,6 +8,7 @@ import {
 } from "@/test/trpc-caller";
 import { dbMock } from "@/test/mocks/db";
 import { makeChunk, makeDocument, makeSession } from "@/test/factories";
+import { fetchPages } from "@/features/summarize/extract/extract";
 
 vi.mock("@/features/summarize/extract/extract", () => ({
   fetchPages: vi.fn(async () => ({
@@ -136,6 +137,51 @@ describe("chat.sendMessage_streaming behavior", () => {
     expect(arg.system).toContain("page 3 — more testimony");
     expect(arg.system).not.toContain("page 1 — irrelevant header");
     expect(arg.system).not.toContain("page 4 — index, not testimony");
+  });
+
+  it("falls back to the full document when no relevant chunks exist (BUG-001)", async () => {
+    dbMock.document.findFirst.mockResolvedValue({
+      ...makeDocument({ id: "doc_a", fileName: "Smith v. Jones" }),
+      // Summary still processing — no chunks generated yet.
+      summaryChunks: [],
+      metadata: null,
+      abstract: null,
+    } as never);
+
+    await runChat(buildCaller(), {
+      messages: [{ role: "user", content: "what is this about?" }],
+      metadata: { documentId: "doc_a" },
+    });
+
+    const arg = vi.mocked(streamText).mock.calls[0]![0] as { system: string };
+    // All pages are included instead of an empty context.
+    expect(arg.system).toContain("page 1 — irrelevant header");
+    expect(arg.system).toContain("page 2 — the testimony begins");
+    expect(arg.system).toContain("page 3 — more testimony");
+    expect(arg.system).toContain("page 4 — index, not testimony");
+    expect(arg.system).not.toContain("not available yet");
+  });
+
+  it("emits an honest 'still being prepared' message when no text is available (BUG-001)", async () => {
+    vi.mocked(fetchPages).mockResolvedValueOnce({
+      pages: [],
+      chunks: [],
+    } as never);
+    dbMock.document.findFirst.mockResolvedValue({
+      ...makeDocument({ id: "doc_a", fileName: "Smith v. Jones" }),
+      summaryChunks: [],
+      metadata: null,
+      abstract: null,
+    } as never);
+
+    await runChat(buildCaller(), {
+      messages: [{ role: "user", content: "hello?" }],
+      metadata: { documentId: "doc_a" },
+    });
+
+    const arg = vi.mocked(streamText).mock.calls[0]![0] as { system: string };
+    expect(arg.system).toContain("still being prepared");
+    expect(arg.system).toContain("Do not claim the document is empty");
   });
 
   it("yields each token chunk from the underlying stream", async () => {

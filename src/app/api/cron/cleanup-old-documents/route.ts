@@ -18,9 +18,6 @@ export async function GET(request: NextRequest) {
   try {
     // Check how many documents would be affected
     const oldDocumentsCount = await getOldDocumentsCount(2);
-    console.log(
-      `Found ${oldDocumentsCount} documents older than 2 months to delete`,
-    );
 
     if (oldDocumentsCount === 0) {
       return NextResponse.json({

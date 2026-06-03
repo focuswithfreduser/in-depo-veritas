@@ -212,7 +212,7 @@ export function CloneToWorkspaceModal({
           <>
             <DialogHeader>
               <DialogTitle className="text-destructive">
-                ⚠️ CRITICAL WARNING - READ CAREFULLY
+                CRITICAL WARNING - READ CAREFULLY
               </DialogTitle>
               <DialogDescription className="space-y-3 text-base">
                 <p className="font-bold text-destructive">

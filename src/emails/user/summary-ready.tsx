@@ -36,7 +36,7 @@ export default function SummaryReadyTemplate({ appUrl }: { appUrl: string }) {
         <Container style={styles.container}>
           <Section>
             <Heading as="h2" style={styles.heading}>
-              Summary Ready 📨 🖋️
+              Summary Ready
             </Heading>
           </Section>
 

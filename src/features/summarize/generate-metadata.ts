@@ -38,12 +38,6 @@ export default async function generateMetadata(
       retries: 3,
       minTimeout: 60000, // 1 minute
       factor: 1, // No exponential backoff, keep flat 1 minute wait
-      onFailedAttempt: (error) => {
-        console.log(
-          `Metadata generation attempt ${error.attemptNumber} failed. Waiting 60 seconds before retry...`,
-        );
-        console.log(`Error: ${error.message}`);
-      },
     },
   );
 

@@ -22,13 +22,11 @@ export async function maybeSendEmail(documentId: string): Promise<void> {
     });
 
     if (!document?.user) {
-      console.log(`Document ${documentId} has no associated user`);
       return;
     }
 
     // Check if user wants email notifications
     if (!document.user.shouldEmailOnComplete) {
-      console.log(`User ${document.user.id} has disabled email notifications`);
       return;
     }
 
@@ -48,15 +46,10 @@ export async function maybeSendEmail(documentId: string): Promise<void> {
     });
 
     if (hasProcessingDocuments > 0) {
-      console.log(
-        `User ${document.user.id} still has ${hasProcessingDocuments} documents being processed from the last day`,
-      );
       return;
     }
 
     // All conditions met - send the notification email
-    console.log(`Sending summary ready email for document ${documentId}`);
-
     const { html, text } = await getSummaryReadyParams();
 
     await sendEmail(
@@ -68,8 +61,6 @@ export async function maybeSendEmail(documentId: string): Promise<void> {
       null,
       REPLY_TO_EMAIL,
     );
-
-    console.log(`Summary ready email sent for document ${documentId}`);
   } catch (error) {
     console.error(`Failed to send email for document ${documentId}:`, error);
     // Don't throw - we don't want email failures to break document processing

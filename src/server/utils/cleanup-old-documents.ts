@@ -17,10 +17,6 @@ export async function cleanupOldDocuments(
   const cutoffDate = new Date();
   cutoffDate.setMonth(cutoffDate.getMonth() - monthsOld);
 
-  console.log(
-    `Starting cleanup of documents older than ${cutoffDate.toISOString()}`,
-  );
-
   const results: CleanupResult = {
     deletedDocuments: 0,
     deletedFiles: 0,
@@ -29,7 +25,6 @@ export async function cleanupOldDocuments(
   };
 
   let hasMoreDocuments = true;
-  let totalProcessed = 0;
 
   while (hasMoreDocuments) {
     // Find documents older than the cutoff date that haven't been deleted yet
@@ -58,10 +53,6 @@ export async function cleanupOldDocuments(
       break;
     }
 
-    console.log(
-      `Processing batch of ${oldDocuments.length} documents (total processed: ${totalProcessed})`,
-    );
-
     // Process documents in smaller sub-batches to avoid overwhelming the system
     for (let i = 0; i < oldDocuments.length; i += processingBatchSize) {
       const subBatch = oldDocuments.slice(i, i + processingBatchSize);
@@ -78,11 +69,6 @@ export async function cleanupOldDocuments(
 
             results.deletedDocuments++;
             results.deletedFiles += filesToDelete;
-            console.log(
-              `Deleted document: ${
-                document.fileName
-              } (created: ${document.createdAt.toISOString()})`,
-            );
           } catch (error) {
             const errorMessage = `Failed to delete document ${document.id} (${
               document.fileName
@@ -100,7 +86,6 @@ export async function cleanupOldDocuments(
     }
 
     results.processedBatches++;
-    totalProcessed += oldDocuments.length;
 
     // If we got fewer documents than the batch size, we're done
     if (oldDocuments.length < batchSize) {
@@ -112,10 +97,6 @@ export async function cleanupOldDocuments(
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
   }
-
-  console.log(
-    `Cleanup completed. Processed ${totalProcessed} documents across ${results.processedBatches} batches. Deleted ${results.deletedDocuments} documents and ${results.deletedFiles} files. Errors: ${results.errors.length}`,
-  );
 
   return results;
 }

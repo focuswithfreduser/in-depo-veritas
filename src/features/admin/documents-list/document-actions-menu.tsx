@@ -49,8 +49,6 @@ export function DocumentActionsMenu({ document }: DocumentActionsMenuProps) {
       link.click();
       window.document.body.removeChild(link);
       toast.success("Screenshot and download complete");
-
-      console.log("Screenshot filePath:", filePath);
     },
     onError: (error) => {
       toast.error(`Failed to screenshot and download: ${error.message}`);

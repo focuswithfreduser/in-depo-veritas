@@ -70,9 +70,6 @@ export function DiscountCodeModal({ children }: DiscountCodeModalProps) {
         </DialogHeader>
         {showSuccess ? (
           <div className="space-y-4 text-center">
-            <div className="flex justify-center">
-              <div className="text-6xl">🎉</div>
-            </div>
             <div className="space-y-2">
               <p className="text-lg font-medium">Discount Code Applied</p>
               <p className="text-muted-foreground">

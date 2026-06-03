@@ -19,10 +19,6 @@ export async function POST(req: Request) {
     );
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
-    if (err! instanceof Error) {
-      console.log(err);
-    }
-    console.log(`❌ Error message: ${errorMessage}`);
     return NextResponse.json(
       { message: `Webhook Error: ${errorMessage}` },
       { status: 400 },
@@ -151,9 +147,6 @@ export async function POST(req: Request) {
       }
 
       default:
-        console.log(
-          `Received event '${event.type}' from Stripe, but no handler was defined.`,
-        );
         return NextResponse.json({ ok: true });
     }
   } catch (err: any) {
