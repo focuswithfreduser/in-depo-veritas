@@ -7,7 +7,7 @@ import {
 
 export default defineConfig({
   machine: "small-2x",
-  project: "proj_sbfrvfdpevqkdqkhtaat",
+  project: "proj_dtlhgpnwifpcplzibpdz",
   runtime: "node",
   // The logLevel only determines which logs are sent to the Trigger.dev instance when using the logger API. All console based logs are always sent.
   logLevel: "log",
