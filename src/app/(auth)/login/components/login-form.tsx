@@ -74,6 +74,14 @@ export function LoginForm({
     }
   }, [showOtpStep]);
 
+  // Pre-fill the email from an invite link, e.g. /login?email=user@example.com
+  useEffect(() => {
+    const emailParam = new URLSearchParams(window.location.search).get("email");
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, []);
+
   const sendOtpMutation = useMutation({
     mutationFn: async () => {
       return authClient.emailOtp.sendVerificationOtp({

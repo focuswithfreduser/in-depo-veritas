@@ -505,9 +505,6 @@ export const adminRouter = createTRPCRouter({
         throw new Error("User with this email already exists");
       }
 
-      // Generate OTP code (6 digits) only if we're sending email
-      const otp = shouldSendEmail ? generateNumericOtp() : null;
-
       // Create user and organization in a transaction
       const result = await db.$transaction(async (tx) => {
         // Create the user
@@ -537,32 +534,15 @@ export const adminRouter = createTRPCRouter({
           },
         });
 
-        // Create verification code only if sending email (expires in 3 days)
-        if (shouldSendEmail && otp) {
-          const expiresAt = new Date();
-          expiresAt.setDate(expiresAt.getDate() + 3);
-
-          await tx.verification.create({
-            data: {
-              identifier: email,
-              value: otp,
-              expiresAt,
-            },
-          });
-        }
-
         return { user, organization };
       });
 
-      // Send welcome email with OTP if requested
-      if (shouldSendEmail && otp) {
-        const loginUrl = `${env.NEXT_PUBLIC_DEPLOYMENT_URL}/login`;
-        const emailParams = await getAdminInviteParams(
-          email,
-          name,
-          otp,
-          loginUrl,
-        );
+      // Send welcome email if requested
+      if (shouldSendEmail) {
+        const loginUrl = `${
+          env.NEXT_PUBLIC_DEPLOYMENT_URL
+        }/login?email=${encodeURIComponent(email)}`;
+        const emailParams = await getAdminInviteParams(email, name, loginUrl);
 
         await sendEmail(
           emailParams.to as string,
@@ -726,32 +706,14 @@ export const adminRouter = createTRPCRouter({
         where: { id: userId },
       });
 
-      // Generate new OTP code (6 digits)
-      const otp = generateNumericOtp();
-
-      // Delete any existing verification codes for this user
-      await db.verification.deleteMany({
-        where: { identifier: user.email },
-      });
-
-      // Create new verification code (expires in 3 days)
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + 3);
-
-      await db.verification.create({
-        data: {
-          identifier: user.email,
-          value: otp,
-          expiresAt,
-        },
-      });
-
-      // Send welcome email with OTP
-      const loginUrl = `${env.NEXT_PUBLIC_DEPLOYMENT_URL}/login`;
+      // Re-send the welcome email. The user signs in by requesting a fresh
+      // one-time code on the login page, so there is no invite code to store.
+      const loginUrl = `${
+        env.NEXT_PUBLIC_DEPLOYMENT_URL
+      }/login?email=${encodeURIComponent(user.email)}`;
       const emailParams = await getAdminInviteParams(
         user.email,
         user.name,
-        otp,
         loginUrl,
       );
 
@@ -833,10 +795,4 @@ export function randomString(size: number) {
   const r = (a: string, i: number): string => a + i2hex(i);
   const bytes = crypto.getRandomValues(new Uint8Array(size));
   return Array.from(bytes).reduce(r, "");
-}
-
-function generateNumericOtp() {
-  const arr = new Uint32Array(1);
-  crypto.getRandomValues(arr);
-  return (100000 + (arr[0] % 900000)).toString();
 }

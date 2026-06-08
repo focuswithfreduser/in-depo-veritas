@@ -3,6 +3,7 @@ import { Footer, styles } from "@/emails/components";
 import type { EmailDataRequired } from "@/services/email/resend";
 import {
   Body,
+  Button,
   Container,
   Head,
   Heading,
@@ -16,7 +17,6 @@ import {
 export async function getAdminInviteParams(
   email: string,
   name: string,
-  otp: string,
   loginUrl: string,
 ): Promise<EmailDataRequired> {
   if (!email) {
@@ -24,10 +24,10 @@ export async function getAdminInviteParams(
   }
 
   const emailHtml = await render(
-    <AdminInviteTemplate name={name} otp={otp} loginUrl={loginUrl} />,
+    <AdminInviteTemplate name={name} loginUrl={loginUrl} />,
   );
   const emailText = await render(
-    <AdminInviteTemplate name={name} otp={otp} loginUrl={loginUrl} />,
+    <AdminInviteTemplate name={name} loginUrl={loginUrl} />,
     {
       plainText: true,
     },
@@ -47,13 +47,11 @@ export async function getAdminInviteParams(
 
 interface AdminInviteTemplateProps {
   name: string;
-  otp: string;
   loginUrl: string;
 }
 
 export default function AdminInviteTemplate({
   name,
-  otp,
   loginUrl,
 }: AdminInviteTemplateProps) {
   return (
@@ -76,17 +74,21 @@ export default function AdminInviteTemplate({
             </Text>
           </Section>
 
-          <Section>
-            <Text style={{ fontWeight: "bold" }}>Login URL: {loginUrl}</Text>
+          <Section style={styles.buttonContainer}>
+            <Button style={styles.button} href={loginUrl}>
+              Log in to In Depo Veritas
+            </Button>
           </Section>
 
           <Section>
-            <Text>Use the following one-time code to log in:</Text>
-            <Heading as="h1" style={{ fontSize: "32px", fontWeight: "bold" }}>
-              {otp}
-            </Heading>
+            <Text>
+              Your email is already filled in on the login page — just click
+              &ldquo;Send verification code&rdquo; and we&rsquo;ll email you a
+              one-time code to sign in.
+            </Text>
             <Text style={{ fontSize: "14px", color: "#666" }}>
-              This code expires in 3 days.
+              If the button doesn&rsquo;t work, paste this link into your
+              browser: {loginUrl}
             </Text>
           </Section>
 
@@ -106,6 +108,5 @@ export default function AdminInviteTemplate({
 
 AdminInviteTemplate.PreviewProps = {
   name: "John Doe",
-  otp: "123456",
-  loginUrl: "https://app.indepoveritas.com/login",
+  loginUrl: "https://app.indepoveritas.com/login?email=john%40example.com",
 };

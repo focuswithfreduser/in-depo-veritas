@@ -20,7 +20,7 @@
     "postinstall": "prisma generate",
     "types": "npx tsc --noEmit",
     "prices": "tsx ./prisma/create-prices.ts",
-    "email": "dotenv -e .env -- email dev --dir ./src/emails",
+    "email": "dotenv -e .env.local -- email dev --dir ./src/emails",
     "provision:stripe": "dotenv -e .env -- ./src/scripts/provision-stripe.ts",
     "test": "vitest",
     "test:run": "vitest run",
