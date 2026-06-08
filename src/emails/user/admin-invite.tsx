@@ -46,8 +46,8 @@ export async function getAdminInviteParams(
 }
 
 interface AdminInviteTemplateProps {
-  name: string;
   loginUrl: string;
+  name: string;
 }
 
 export default function AdminInviteTemplate({
