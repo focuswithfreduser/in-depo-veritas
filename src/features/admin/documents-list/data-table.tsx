@@ -32,11 +32,15 @@ import DataTablePagination from "@/components/ui/data-table/pagination";
 import {
   Archive,
   CheckCircle,
+  Clock,
   Loader2,
   Package,
+  Trash2,
+  Upload,
   User,
   XCircle,
 } from "lucide-react";
+import { DocumentStatus } from "@/app/generated/prisma";
 import { useRouter, useSearchParams } from "next/navigation";
 import { GrClose } from "react-icons/gr";
 import { columns } from "./columns";
@@ -304,21 +308,44 @@ export default function FilesDataTable({ data }: { data: AdminFile[] }) {
     },
   });
 
+  // Values must match the raw DocumentStatus enum members stored on the
+  // document (the status column's filterFn compares against row.getValue).
+  // Using the generated enum keeps these in sync if the DB statuses change.
   const statusOptions = [
     {
-      label: "Success",
-      value: "false",
-      icon: CheckCircle,
+      label: "Uploading",
+      value: DocumentStatus.uploading,
+      icon: Upload,
     },
     {
       label: "Pending",
-      value: "pending",
+      value: DocumentStatus.pending,
+      icon: Clock,
+    },
+    {
+      label: "Processing",
+      value: DocumentStatus.processing,
       icon: Loader2,
     },
     {
+      label: "Finalizing",
+      value: DocumentStatus.finalizing,
+      icon: Loader2,
+    },
+    {
+      label: "Complete",
+      value: DocumentStatus.complete,
+      icon: CheckCircle,
+    },
+    {
       label: "Failed",
-      value: "true",
+      value: DocumentStatus.failed,
       icon: XCircle,
+    },
+    {
+      label: "Deleted",
+      value: DocumentStatus.deleted,
+      icon: Trash2,
     },
   ];
 
