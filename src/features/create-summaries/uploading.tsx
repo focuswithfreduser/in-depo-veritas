@@ -156,12 +156,12 @@ export function Uploading() {
                 </p>
               )}
             </div>
-            <Link href="/app/settings/billing">
-              <Button className="gap-2">
+            <Button asChild className="gap-2">
+              <Link href="/app/settings/billing">
                 <CreditCard className="h-4 w-4" />
                 Go to Billing
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
