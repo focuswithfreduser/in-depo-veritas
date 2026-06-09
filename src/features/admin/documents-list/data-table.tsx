@@ -308,9 +308,6 @@ export default function FilesDataTable({ data }: { data: AdminFile[] }) {
     },
   });
 
-  // Values must match the raw DocumentStatus enum members stored on the
-  // document (the status column's filterFn compares against row.getValue).
-  // Using the generated enum keeps these in sync if the DB statuses change.
   const statusOptions = [
     {
       label: "Uploading",
