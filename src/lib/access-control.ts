@@ -51,6 +51,19 @@ export function isAccessDeniedReason(
 }
 
 /**
+ * Whether a time-limited access grant has lapsed. Shared by the login-time
+ * gate (`src/lib/auth.ts`, which blocks sign-in) and the per-request gate
+ * (`protectedProcedure`, which blocks + revokes mid-session) so both use the
+ * exact same definition of "expired".
+ */
+export function hasAccessExpired(
+  accessExpiresAt: Date | null | undefined,
+  now: number = Date.now(),
+): boolean {
+  return !!accessExpiresAt && accessExpiresAt.getTime() < now;
+}
+
+/**
  * Read the discriminator off the `cause` of a thrown error (server side, where
  * we still hold the `AccessDeniedError` instance).
  */

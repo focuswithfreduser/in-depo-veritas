@@ -5,12 +5,14 @@ import { db } from "@/lib/db";
 import { sendEmail } from "@/services/email/resend";
 import { formatEmail } from "@/lib/utils";
 import { betterAuth } from "better-auth";
+import { APIError } from "better-auth/api";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { admin, emailOTP, organization } from "better-auth/plugins";
 import { getActiveOrganization } from "./get-active-org";
 import { setDevOtp } from "./dev-otp-store";
 import { createLazyResource } from "./utils/lazy-resource";
+import { ACCESS_DENIED_MESSAGES, hasAccessExpired } from "./access-control";
 
 export const auth = createLazyResource(() =>
   betterAuth({
@@ -86,6 +88,25 @@ export const auth = createLazyResource(() =>
       session: {
         create: {
           before: async (session) => {
+            // Block sign-in for a user whose time-limited access has lapsed.
+            // Better Auth only gates `banned` at session creation (the admin
+            // plugin), not `accessExpiresAt` — so without this, an expired
+            // user could complete OTP login and would only be stopped on
+            // their first protected request. We mirror the admin plugin's
+            // banned check here so expired users cannot sign in at all
+            // (IMP-003), matching the admin UI's promise. The discriminating
+            // `code` lets the login screen show a clear message.
+            const dbUser = await db.user.findUnique({
+              where: { id: session.userId },
+              select: { accessExpiresAt: true },
+            });
+            if (hasAccessExpired(dbUser?.accessExpiresAt)) {
+              throw new APIError("FORBIDDEN", {
+                message: ACCESS_DENIED_MESSAGES["access-expired"],
+                code: "ACCESS_EXPIRED",
+              });
+            }
+
             const organization = await getActiveOrganization(session.userId);
             return {
               data: {

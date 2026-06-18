@@ -6,6 +6,7 @@ import {
   accessDeniedRedirectTarget,
   accessDeniedReasonFromCause,
   getAccessDeniedReason,
+  hasAccessExpired,
   isAccessDeniedReason,
 } from "./access-control";
 
@@ -21,6 +22,23 @@ describe("isAccessDeniedReason", () => {
     expect(isAccessDeniedReason(null)).toBe(false);
     expect(isAccessDeniedReason(undefined)).toBe(false);
     expect(isAccessDeniedReason(403)).toBe(false);
+  });
+});
+
+describe("hasAccessExpired", () => {
+  const now = new Date("2026-06-18T12:00:00.000Z").getTime();
+
+  it("is false when there is no expiry set", () => {
+    expect(hasAccessExpired(null, now)).toBe(false);
+    expect(hasAccessExpired(undefined, now)).toBe(false);
+  });
+
+  it("is false while the grant is still in the future", () => {
+    expect(hasAccessExpired(new Date(now + 60_000), now)).toBe(false);
+  });
+
+  it("is true once the grant is in the past", () => {
+    expect(hasAccessExpired(new Date(now - 60_000), now)).toBe(true);
   });
 });
 
