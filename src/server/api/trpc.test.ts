@@ -86,6 +86,8 @@ describe("protectedProcedure", () => {
       const c = caller({ session });
       await expect(c.protectedNoop()).rejects.toMatchObject({
         code: "UNAUTHORIZED",
+        // Discriminator the client branches on (IMP-002 / IMP-003).
+        cause: { reason: "suspended" },
       });
       expect(dbMock.session.deleteMany).toHaveBeenCalledWith({
         where: { userId: session.user.id },
@@ -167,6 +169,8 @@ describe("protectedProcedure", () => {
       const c = caller({ session });
       await expect(c.protectedNoop()).rejects.toMatchObject({
         code: "UNAUTHORIZED",
+        // Discriminator the client branches on (IMP-003).
+        cause: { reason: "access-expired" },
       });
       expect(dbMock.session.deleteMany).toHaveBeenCalledWith({
         where: { userId: session.user.id },

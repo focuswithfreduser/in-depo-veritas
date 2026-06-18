@@ -15,6 +15,10 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { Subscription, Trial } from "@/app/generated/prisma";
 import { env } from "@/create-env.mjs";
+import {
+  AccessDeniedError,
+  accessDeniedReasonFromCause,
+} from "@/lib/access-control";
 
 /**
  * 1. CONTEXT
@@ -71,6 +75,10 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
         ...shape.data,
         zodError:
           error.cause instanceof ZodError ? treeifyError(error.cause) : null,
+        // Stable discriminator so the client can reliably tell an
+        // access-denied error (suspension / expiry) apart from an ordinary
+        // UNAUTHORIZED without matching on the (brittle) message string.
+        accessDeniedReason: accessDeniedReasonFromCause(error.cause),
       },
     };
   },
@@ -211,6 +219,7 @@ export const protectedProcedure = t.procedure
         throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Your account has been suspended.",
+          cause: new AccessDeniedError("suspended"),
         });
       }
     }
@@ -225,6 +234,7 @@ export const protectedProcedure = t.procedure
       throw new TRPCError({
         code: "UNAUTHORIZED",
         message: "Your access has expired.",
+        cause: new AccessDeniedError("access-expired"),
       });
     }
 
