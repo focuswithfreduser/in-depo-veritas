@@ -18,6 +18,7 @@ import { env } from "@/create-env.mjs";
 import {
   AccessDeniedError,
   accessDeniedReasonFromCause,
+  hasAccessExpired,
 } from "@/lib/access-control";
 
 /**
@@ -224,10 +225,7 @@ export const protectedProcedure = t.procedure
       }
     }
 
-    if (
-      dbUser?.accessExpiresAt &&
-      dbUser.accessExpiresAt.getTime() < Date.now()
-    ) {
+    if (hasAccessExpired(dbUser?.accessExpiresAt)) {
       await db.session.deleteMany({
         where: { userId: ctx.session.user.id },
       });
