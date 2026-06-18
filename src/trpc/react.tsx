@@ -1,7 +1,12 @@
 "use client";
 
 import { type AppRouter } from "@/server/api/root";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import {
   httpBatchLink,
   httpBatchStreamLink,
@@ -12,6 +17,7 @@ import {
 import { createTRPCReact } from "@trpc/react-query";
 import { useState } from "react";
 import superjson from "superjson";
+import { accessDeniedRedirectTarget } from "@/lib/access-control";
 
 export const api = createTRPCReact<AppRouter>();
 
@@ -20,10 +26,29 @@ function getBaseUrl() {
   return process.env.NEXT_PUBLIC_DEPLOYMENT_URL;
 }
 
+/**
+ * Global handler for access-denied errors (IMP-003). When a query or mutation
+ * fails because the user's access expired or they were suspended mid-session,
+ * the backend revokes the session and tags the error with a discriminator.
+ * Here we surface that instead of letting it fail silently: redirect to the
+ * login screen carrying the reason so the user sees a clear message rather
+ * than an unexplained logout. Ordinary errors (including a plain UNAUTHORIZED
+ * from a normal logout) carry no discriminator and are left untouched.
+ */
+function handleGlobalQueryError(error: unknown) {
+  if (typeof window === "undefined") return;
+  const target = accessDeniedRedirectTarget(error, window.location.pathname);
+  if (target) {
+    window.location.href = target;
+  }
+}
+
 export function TRPCReactProvider(props: { children: React.ReactNode }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
+        queryCache: new QueryCache({ onError: handleGlobalQueryError }),
+        mutationCache: new MutationCache({ onError: handleGlobalQueryError }),
         defaultOptions: {
           queries: {
             refetchOnWindowFocus: false, // Disable to prevent re-renders on focus

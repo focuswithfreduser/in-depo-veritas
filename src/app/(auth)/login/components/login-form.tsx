@@ -4,18 +4,25 @@ import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { VerificationCodeInput } from "@/components/ui/verification-code-input";
 import { cn } from "@/lib/utils";
+import {
+  ACCESS_DENIED_MESSAGES,
+  isAccessDeniedReason,
+  type AccessDeniedReason,
+} from "@/lib/access-control";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-import { CheckCircle, EditIcon } from "lucide-react";
+import { AlertCircle, CheckCircle, EditIcon } from "lucide-react";
 import { NoNewUsersBanner } from "@/components/no-new-users-banner";
 import { toast } from "sonner";
 
 import { authClient } from "@/lib/auth-client";
 import { useMutation } from "@tanstack/react-query";
 import { AuthTestimonials } from "../../components/auth-testimonials";
+import { classifyOtpSignInError } from "../login-error";
 
 const SECONDS_TO_RESEND = 59;
 
@@ -48,6 +55,12 @@ export function LoginForm({
   const [isSuccess, setIsSuccess] = useState(false);
   const [showOtpStep, setShowOtpStep] = useState(false);
   const [devOtpHint, setDevOtpHint] = useState<string | null>(null);
+  // A hard access-denied notice (suspension / expiry) — shown as a banner so
+  // the user understands why they cannot get in, instead of assuming the code
+  // was wrong (IMP-002) or that the app silently logged them out (IMP-003).
+  const [accessNotice, setAccessNotice] = useState<AccessDeniedReason | null>(
+    null,
+  );
 
   const verificationCodeInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -75,10 +88,17 @@ export function LoginForm({
   }, [showOtpStep]);
 
   // Pre-fill the email from an invite link, e.g. /login?email=user@example.com
+  // and surface an access-denied reason when redirected here mid-session,
+  // e.g. /login?reason=access-expired (set by the global error handler).
   useEffect(() => {
-    const emailParam = new URLSearchParams(window.location.search).get("email");
+    const params = new URLSearchParams(window.location.search);
+    const emailParam = params.get("email");
     if (emailParam) {
       setEmail(emailParam);
+    }
+    const reasonParam = params.get("reason");
+    if (isAccessDeniedReason(reasonParam)) {
+      setAccessNotice(reasonParam);
     }
   }, []);
 
@@ -136,8 +156,16 @@ export function LoginForm({
     },
     onSuccess: (result) => {
       if (result.error) {
-        setIsCodeInvalid(true);
-        toast.error("Invalid verification code. Please try again.");
+        const reason = classifyOtpSignInError(result.error);
+        if (reason) {
+          // Suspended user: show the clear notice, not "Incorrect code".
+          setAccessNotice(reason);
+          setIsCodeInvalid(false);
+          toast.error(ACCESS_DENIED_MESSAGES[reason]);
+        } else {
+          setIsCodeInvalid(true);
+          toast.error("Invalid verification code. Please try again.");
+        }
       } else {
         setIsSuccess(true);
         // toast.success("Successfully logged in!");
@@ -201,6 +229,9 @@ export function LoginForm({
     if (isCodeInvalid) {
       setIsCodeInvalid(false);
     }
+    if (accessNotice) {
+      setAccessNotice(null);
+    }
   }
 
   function handleResend() {
@@ -218,6 +249,7 @@ export function LoginForm({
     setIsCodeInvalid(undefined);
     setCanResend(false);
     setDevOtpHint(null);
+    setAccessNotice(null);
   }
 
   return (
@@ -228,6 +260,15 @@ export function LoginForm({
           <div className="mb-8 flex justify-center">
             <Logo />
           </div>
+
+          {accessNotice && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {ACCESS_DENIED_MESSAGES[accessNotice]}
+              </AlertDescription>
+            </Alert>
+          )}
 
           {!showOtpStep ? (
             // Email Step
